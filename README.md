@@ -1,18 +1,17 @@
-# The Horadric Internet Scraper
+# Private Research Mainframe Terminal
 
-A high-fidelity data analytics tracking portal stylized precisely like a Diablo II: Lord of Destruction workspace interface.
+An internal data visualization portal built exclusively for personal item research, stylized precisely with a green-phosphor Matrix mainframe terminal interface.
 
-## Features
+## System Capabilities & Architecture
 
-* **Necromancer Scrying Canvas:** A custom HTML5 canvas component utilizing absolute isometric projection coordinate transformations to visualize active data scraping pathways, featuring multiple active necromancer sprites tracking Amazon, Etsy, and TikTok Shop pipelines.
-* **Main Altar Inspection:** Displays primary item metrics alongside active real-time marketplace source metadata, integrated with automated outbound redirect anchors.
-* **Detailed Views Carousel:** Embedded interactive thumbnail frames positioned right below the main product artwork, allowing users to zoom and change item perspectives seamlessly without state disruption.
-* **Interactive Sales Metric Tome:** A 7-day metric tracking system featuring an interactive selection matrix that dynamically toggles down into a 24-hour localized hourly distribution line chart.
-* **Top 10 Off-Ranking Trends:** A text-only sidebar tracking rapid-velocity items that have not yet cracked the main top-tier sales pool.
-* **Inventory Equipment Grid:** A scrollable, bottom-anchored matrix map displaying items #2 through #15. Clicking an element's custom "Equip" trigger seamlessly swaps its data array directly into the central Altar and Sales Graph.
+* **Matrix Mainframe UI:** Stripped of public-facing components and overhauled with high-contrast black terminal nodes, neon green typography, and a custom HTML5 digital rain canvas element simulating active stream decryption.
+* **Single Image Signature:** Enforces a strict data profile that gathers exactly one high-resolution master product picture per item entry, eliminating unnecessary dynamic peripheral thumbnail grids.
+* **Isolated TikTok Shop Pipelines:** Data collection rules explicitly prioritize verified marketplace product nodes from the official TikTok Shop channel while fundamentally filtering out viral video ad placements.
+* **Interactive Node Selection Matrix:** Features an item inventory grid mapping ranks 1 through 15. Triggering a node's "Connect" interface dynamically updates the central metric canvas and time-series line graph without loss of viewport state.
+* **Unindexed Velocity Feed:** A text-only sidebar tracking rapid-growth trending items that have not yet cracked the top-tier sales pool.
 
-## How to Deploy to Streamlit Community Cloud
+## Deployment to Streamlit Cloud (Private Instance)
 
-1. Push `app.py` and `requirements.txt` into a public GitHub repository.
-2. Visit [share.streamlit.io](https://share.streamlit.io) and log in using your GitHub account credentials.
-3. Click **"New App"**, find your target tracking repository branch, specify the main file path, and click **Deploy**.
+1. Push `app.py` and `requirements.txt` into a **private** GitHub repository.
+2. Visit [share.streamlit.io](https://share.streamlit.io) and sign in using your GitHub credentials.
+3. Click **"New App"**, select your private tracking repository, choose the primary branch, and click **Deploy**.
