@@ -1,26 +1,26 @@
-# 💀 The Horadric Ledger - Diablo IV E-Commerce Control Center
+# 💀 The Horadric Archive - Diablo IV Style E-Commerce Tracker
 
-An automated, high-velocity e-commerce tracking dashboard modeled directly after the dark gothic user interface of Diablo IV. This application provides a unified look at the actual highest-selling products across Amazon, Etsy, and TikTok Shop using a time-locked 3-hour scrying ritual engine.
+An automated, high-fidelity e-commerce tracking dashboard modeled directly after the dark gothic character stash user interface of Diablo IV. This application provides a live snapshot of high-volume items across Amazon, Etsy, and TikTok Shop using an autonomous 3-hour Necromancer scrying ritual engine.
 
 ## 🔮 Active Mechanics
-* **Inventory Tile Selection:** Interactive button layouts styled like Diablo IV item slots allow you to quickly change the focused view.
-* **The Crucible Frame:** A centralized showcase displaying the chosen item with exactly one real-world scrying image.
-* **Temporal Velocity Ledger:** An interactive 7-day sales bar chart. Selecting an individual day instantly reveals a deep-dive hourly sales breakdown matrix.
-* **Necromancer Scrying Ritual:** A visually active loading sequence that automatically triggers every 3 hours to recalculate and refresh live product trends.
-* **The Outer Circle:** A specialized, image-free tracking grid reserved for the top 10 rising product trends before they breach the primary top 15 ranks.
+* **The Horadric Inventory Grid:** A dual-column layout showcasing the top 15 selling items across online marketplaces. Every single slot displays an authentic product picture mapping back to its destination link.
+* **The Crown Artifact Focus:** A centralized inspection frame displaying the chosen item alongside its core 7-day transaction metrics. 
+* **Temporal Velocity Ledger:** Interactive 7-day sales bar charts. Clicking an individual day instantly parses data down into an hourly transaction velocity run-rate.
+* **Necromancer Scrying Ritual:** A visually active loading sequence that triggers automatically every 3 hours to recalculate and refresh live product trends.
+* **The Outer Circle:** An image-free tracking list displaying the top 10 rising shadows (trending items) before they pierce the primary top 15 grid slots.
 
 ---
 
 ## 📜 Repository Structure
-* `app.py` - Main application framework containing the Diablo IV global layout style rules and data loops.
-* `requirements.txt` - Minimalist requirement file containing only the core framework engine.
+* `app.py` - Core application framework housing the Diablo IV global layout style rules and live data loops.
+* `requirements.txt` - Minimalist dependency list containing only the core framework engine.
 * `README.md` - Documentation ledger.
 
 ---
 
 ## 🛠️ Deployment Instructions
 
-To manifest this dashboard inside the **Streamlit Community Cloud**:
+To deploy this dashboard inside the **Streamlit Community Cloud**:
 1. Commit your `app.py` and `requirements.txt` files into a GitHub repository.
 2. Navigate to the [Streamlit Share Dashboard](https://share.streamlit.io/) and authenticate using your GitHub account.
 3. Select **New App**, locate your specific repository, and point the main file path directly to `app.py`.
