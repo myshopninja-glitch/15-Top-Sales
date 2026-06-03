@@ -3,10 +3,10 @@ import pandas as pd
 import plotly.express as px
 import random
 
-# Force wide layout and dark-gothic style settings
-st.set_page_config(page_title="Internet Scavenger", layout="wide", initial_sidebar_state="collapsed")
+# Force wide layout and dark-gothic style settings to match image_040999.jpg
+st.set_page_config(page_title="The Horadric Internet Scraper", layout="wide", initial_sidebar_state="collapsed")
 
-# Custom CSS styling to perfectly match the high-fidelity Diablo 2 LOD UI image
+# Custom CSS styling to perfectly mimic the high-fidelity Diablo 2 LOD UI styling
 st.markdown('''
 <style>
     /* Global Background and Typography */
@@ -24,12 +24,12 @@ st.markdown('''
         letter-spacing: 1px;
     }
 
-    /* Gothic UI Panel Frames matching the golden-brown borders of D2 LOD */
+    /* Gothic UI Panel Frames matching image_040999.jpg layout structures */
     .gothic-panel {
-        background-color: #121212;
-        border: 2px solid #3a3124;
-        border-top: 2px solid #554733;
-        border-bottom: 2px solid #282118;
+        background-color: #111111;
+        border: 2px solid #3c3326;
+        border-top: 2px solid #574a37;
+        border-bottom: 2px solid #2a2219;
         border-radius: 2px;
         padding: 14px;
         box-shadow: inset 0 0 20px #000000, 0 8px 16px rgba(0,0,0,0.9);
@@ -50,43 +50,58 @@ st.markdown('''
         letter-spacing: 1.5px;
     }
 
-    /* Thumbnail frame highlights exactly like item sockets */
+    /* Thumbnail frame highlights matching item sockets exactly */
     .thumb-frame {
         border: 2px solid #3a3124;
-        background-color: #090909;
+        background-color: #050505;
         padding: 2px;
-        border-radius: 4px;
-        display: inline-block;
-        transition: border-color 0.2s ease;
+        border-radius: 3px;
+        text-align: center;
     }
     .thumb-frame.active {
-        border-color: #e5a93c;
-        box-shadow: 0 0 8px rgba(229, 169, 60, 0.4);
+        border-color: #e59422;
+        box-shadow: 0 0 8px rgba(229, 148, 34, 0.5);
     }
 
-    /* Real Hyperlinks */
+    /* Immersive Product Active Links */
     .product-link {
         color: #dfc89f !important;
         text-decoration: none;
         font-weight: bold;
+        border-bottom: 1px dotted #554733;
     }
     .product-link:hover {
         color: #ffffff !important;
-        text-decoration: underline !important;
+        text-decoration: none !important;
+        border-bottom: 1px solid #dfc89f;
     }
 
-    /* Lower Inventory Item Cards */
+    /* Text-Only Trending Sheet Styling */
+    .trending-box {
+        font-size: 0.8rem;
+        line-height: 1.4;
+        color: #dfc89f;
+    }
+    .trending-note {
+        font-size: 0.72rem;
+        color: #8c7d67;
+        margin-top: 12px;
+        line-height: 1.3;
+        font-family: "Georgia", serif;
+    }
+
+    /* Lower Horizontal Inventory Grid Frame adjustments */
     .inventory-card-frame {
-        border: 2px solid #3a3124;
-        background-color: rgba(14, 14, 14, 0.85);
+        border: 2px solid #3c3326;
+        background-color: rgba(12, 12, 12, 0.9);
         border-radius: 3px;
-        padding: 6px;
+        padding: 8px;
         text-align: center;
         box-shadow: 0 4px 10px rgba(0,0,0,0.9);
     }
     .inventory-card-frame.equipped {
         border-color: #dfc89f;
-        background-color: rgba(45, 34, 23, 0.4);
+        background-color: rgba(45, 34, 23, 0.35);
         box-shadow: inset 0 0 10px #000000, 0 4px 10px rgba(0,0,0,0.9);
     }
     
@@ -101,15 +116,15 @@ st.markdown('''
         margin-top: 15px;
     }
     
-    /* Override standard streamlit button layouts to keep them immersive */
+    /* Programmatic buttons custom styling */
     .stButton>button {
         background: linear-gradient(to bottom, #3a3124 0%, #1b1610 100%) !important;
         color: #dfc89f !important;
         border: 1px solid #554733 !important;
         border-radius: 2px !important;
         font-family: "Georgia", serif !important;
-        font-size: 0.8rem !important;
-        transition: all 0.1s ease-in-out;
+        font-size: 0.78rem !important;
+        width: 100%;
     }
     .stButton>button:hover {
         color: #ffffff !important;
@@ -119,7 +134,7 @@ st.markdown('''
 </style>
 ''', unsafe_allow_html=True)
 
-# Dataset Initialization
+# Dataset Initialization (Top 15 Items Array mapped with high-res assets)
 @st.cache_data
 def get_scavenged_data():
     top_15 = [
@@ -155,7 +170,7 @@ def get_scavenged_data():
 
 top_items = get_scavenged_data()
 
-# Manage UI Presentation State Engine
+# Manage UI Presentation Engine States
 if 'selected_idx' not in st.session_state:
     st.session_state.selected_idx = 0
 if 'drill_day' not in st.session_state:
@@ -165,33 +180,35 @@ if 'selected_thumb' not in st.session_state:
 
 curr_item = top_items[st.session_state.selected_idx]
 
-# --- HEADER ASSEMBLY ---
+# --- HEADER ASSEMBLY MATCHING IMAGE_040999.JPG ---
 st.markdown('''
 <div style="display: flex; justify-content: space-between; align-items: flex-end; padding: 2px 0;">
-    <h2 style="margin: 0; font-size: 1.45rem; font-weight: normal; font-family:'Georgia';">(💀) INTERNET SCAVENGER <span style="font-size:0.65em; color:#4caf50; font-family:monospace;">[LIVE METRIC SESSION]</span></h2>
-    <div style="font-size:0.82rem; color:#858585; font-family: monospace;">NEXT REFRESH CYCLE IN: <span style="color:#dfc89f; font-weight:bold;">1h 25m</span></div>
+    <h2 style="margin: 0; font-size: 1.45rem; font-weight: normal; font-family:'Georgia'; color:#dfc89f;">
+        (💀) THE HORADRIC INTERNET SCRAPER <span style="font-size:0.65em; color:#4caf50; font-family:monospace;">[LIVE METRIC SESSION]</span>
+    </h2>
+    <div style="font-size:0.85rem; color:#a6967d; font-family: monospace;">NEXT REFRESH CYCLE IN: <span style="color:#ffffff; font-weight:bold;">1h 25m</span></div>
 </div>
-<hr style="border: 1px solid #3a3124; margin-top: 4px; margin-bottom: 15px;">
+<hr style="border: 1px solid #3c3326; margin-top: 4px; margin-bottom: 15px;">
 ''', unsafe_allow_html=True)
 
-# --- PANEL COLUMN GRID ---
+# --- THREE-COLUMN HIGH-FIDELITY MAIN WORKSPACE LAYOUT ---
 col_left, col_center, col_right = st.columns([1.35, 1.65, 1.1])
 
-# 1. LEFT PANEL: SEARCHING (Isometric Canvas with Traveling Necromancer Character Sprite)
+# 1. LEFT PANEL: SEARCHING (Isometric Network Canvas featuring 3 Visually Active Necromancer entities)
 with col_left:
     st.markdown('<div class="gothic-panel">', unsafe_allow_html=True)
-    st.markdown('<div class="panel-title">SEARCHING</div>', unsafe_allow_html=True)
+    st.markdown('<div class="panel-title">NECROMANCER</div>', unsafe_allow_html=True)
     
-    # HTML5 Canvas Injector running real-time scrying loops tracking market outposts
+    # Custom HTML5 engine drawing isometric project routes, terminals, and necromancers
     st.components.v1.html('''
     <div style="position:relative; width:100%; height:275px; background:#040404; border:1px solid #2e261c; overflow:hidden;">
-        <canvas id="isometricCanvas" style="position:absolute; top:0; left:0; width:100%; height:100%;"></canvas>
-        <div style="position:absolute; top:12px; left:12px; font-family:monospace; font-size:11px; color:#68a368; background:rgba(0,0,0,0.85); padding:6px; border:1px solid #3a3124;">
-            ✨ Active Scrying: Necromancer crawling realms...
+        <canvas id="scryingWorkshop" style="position:absolute; top:0; left:0; width:100%; height:100%;"></canvas>
+        <div style="position:absolute; top:12px; left:12px; font-family:monospace; font-size:11px; color:#52b752; background:rgba(0,0,0,0.85); padding:5px; border:1px solid #3c3326;">
+            Active Scrying: Processing top sellers...
         </div>
     </div>
     <script>
-        const canvas = document.getElementById('isometricCanvas');
+        const canvas = document.getElementById('scryingWorkshop');
         const ctx = canvas.getContext('2d');
         
         function resize() {
@@ -202,183 +219,143 @@ with col_left:
         resize();
 
         function isoProject(x, y, z=0) {
-            const centerX = canvas.width / 2;
-            const centerY = canvas.height / 2 - 15;
-            return {
-                x: centerX + (x - y) * 0.82,
-                y: centerY + (x + y) * 0.42 - z
-            };
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2 - 10;
+            return { x: cx + (x - y) * 0.85, y: cy + (x + y) * 0.42 - z };
         }
 
-        const nodes = [
-            {name: "amazon.com", x: -75, y: -65, color: "#e59422"},
-            {name: "etsy.com", x: -65, y: 70, color: "#d9531e"},
-            {name: "tiktok.com", x: 75, y: -65, color: "#17c2cc"},
-            {name: "SCAVENGER ALTAR", x: 0, y: 0, color: "#dfc89f"}
+        const rooms = [
+            {name: "amazon.com", x: -75, y: -65, color: "#ff9900"},
+            {name: "etsy.com", x: -65, y: 70, color: "#f1641e"},
+            {name: "tiktok.com", x: 75, y: -65, color: "#00f2fe"},
+            {name: "PORTAL HUB", x: 0, y: 0, color: "#dfc89f"}
         ];
 
-        // Necromancer configuration wandering between marketplace nodes
-        const necro = {
-            currentPath: 0,
-            prog: 0.0,
-            speed: 0.006,
-            forward: true,
-            pulse: 0
-        };
-
-        function runLoop() {
+        let pulse = 0;
+        function render() {
             ctx.clearRect(0,0,canvas.width,canvas.height);
-            necro.pulse += 0.05;
-            
-            // Draw runic paths
-            ctx.lineWidth = 1.5;
+            pulse += 0.04;
+
+            // Render glowing energy channels connecting networks
+            ctx.lineWidth = 2;
             for(let i=0; i<3; i++) {
-                const pStart = isoProject(nodes[3].x, nodes[3].y);
-                const pEnd = isoProject(nodes[i].x, nodes[i].y);
-                let grad = ctx.createLinearGradient(pStart.x, pStart.y, pEnd.x, pEnd.y);
-                grad.addColorStop(0, "rgba(141, 113, 80, 0.4)");
-                grad.addColorStop(1, "rgba(40, 30, 20, 0.05)");
-                ctx.strokeStyle = grad;
-                ctx.beginPath();
-                ctx.moveTo(pStart.x, pStart.y);
-                ctx.lineTo(pEnd.x, pEnd.y);
-                ctx.stroke();
+                let p1 = isoProject(rooms[3].x, rooms[3].y);
+                let p2 = isoProject(rooms[i].x, rooms[i].y);
+                let g = ctx.createLinearGradient(p1.x, p1.y, p2.x, p2.y);
+                g.addColorStop(0, "rgba(82, 183, 82, 0.4)");
+                g.addColorStop(1, "rgba(42, 34, 25, 0.1)");
+                ctx.strokeStyle = g;
+                ctx.beginPath(); ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
             }
 
-            // Draw Outposts
-            nodes.forEach(n => {
-                const pt = isoProject(n.x, n.y);
-                ctx.fillStyle = "#0c0a08";
+            // Draw Site Outposts
+            rooms.forEach(r => {
+                let pt = isoProject(r.x, r.y);
+                ctx.fillStyle = "#0a0907";
                 ctx.strokeStyle = "#4a3f2e";
-                ctx.lineWidth = 2;
-                ctx.beginPath();
-                ctx.rect(pt.x - 8, pt.y - 8, 16, 16);
-                ctx.fill();
-                ctx.stroke();
+                ctx.beginPath(); ctx.rect(pt.x-10, pt.y-10, 20, 20); ctx.fill(); ctx.stroke();
                 
-                ctx.fillStyle = n.color;
-                ctx.beginPath();
-                ctx.arc(pt.x, pt.y, 3, 0, Math.PI*2);
-                ctx.fill();
+                ctx.fillStyle = r.color;
+                ctx.beginPath(); ctx.arc(pt.x, pt.y, 3, 0, Math.PI*2); ctx.fill();
 
-                ctx.font = "10px monospace";
-                ctx.fillStyle = "#dfc89f";
-                ctx.textAlign = "center";
-                ctx.fillText(n.name, pt.x, pt.y + 22);
+                ctx.font = "10px monospace"; ctx.fillStyle = "#dfc89f"; ctx.textAlign = "center";
+                ctx.fillText(r.name, pt.x, pt.y + 24);
             });
 
-            // Update & Animate Necromancer Sprite representation
-            if(necro.forward) {
-                necro.prog += necro.speed;
-                if(necro.prog >= 1.0) { necro.forward = false; }
-            } else {
-                necro.prog -= necro.speed;
-                if(necro.prog <= 0.0) {
-                    necro.forward = true;
-                    necro.currentPath = (necro.currentPath + 1) % 3;
-                }
-            }
+            // NECROMANCER 1: Working/Casting at the Etsy Stall
+            let nec1 = isoProject(-50, 50, 4);
+            ctx.fillStyle = "#3a1a4a"; // Cultist purple robe
+            ctx.beginPath(); ctx.moveTo(nec1.x, nec1.y-12); ctx.lineTo(nec1.x-4, nec1.y+2); ctx.lineTo(nec1.x+4, nec1.y+2); ctx.fill();
+            ctx.fillStyle = "#f1641e"; ctx.beginPath(); ctx.arc(nec1.x, nec1.y-4, 2, 0, Math.PI*2); ctx.fill();
 
-            const startNode = nodes[3];
-            const endNode = nodes[necro.currentPath];
-            const nx = startNode.x + (endNode.x - startNode.x) * necro.prog;
-            const ny = startNode.y + (endNode.y - startNode.y) * necro.prog;
-            const nPt = isoProject(nx, ny, 6);
+            // NECROMANCER 2: Casting a ritual at the Central Scrying Portal
+            let nec2 = isoProject(10, 15, 6);
+            ctx.fillStyle = "#1e354a"; // Blue robe
+            ctx.beginPath(); ctx.moveTo(nec2.x, nec2.y-14); ctx.lineTo(nec2.x-5, nec2.y+2); ctx.lineTo(nec2.x+5, nec2.y+2); ctx.fill();
+            // Portal sphere blast glow
+            ctx.fillStyle = "#52b752"; ctx.shadowColor = "#52b752"; ctx.shadowBlur = 10 + Math.sin(pulse)*5;
+            ctx.beginPath(); ctx.arc(nec2.x - 8, nec2.y - 6, 3, 0, Math.PI*2); ctx.fill(); ctx.shadowBlur = 0;
 
-            // Draw Cloaked Necromancer Model
-            ctx.fillStyle = "#4a1212"; // Deep dark red robe
-            ctx.beginPath();
-            ctx.moveTo(nPt.x, nPt.y - 12); // Hood peak
-            ctx.lineTo(nPt.x - 5, nPt.y + 2);
-            ctx.lineTo(nPt.x + 5, nPt.y + 2);
-            ctx.closePath();
-            ctx.fill();
+            // NECROMANCER 3: Near a glowing gothic keyboard monitor infrastructure
+            let nec3 = isoProject(55, -45, 2);
+            ctx.fillStyle = "#4a1212"; // Traditional blood red robe
+            ctx.beginPath(); ctx.moveTo(nec3.x, nec3.y-12); ctx.lineTo(nec3.x-4, nec3.y+2); ctx.lineTo(nec3.x+4, nec3.y+2); ctx.fill();
+            // Keyboard screen terminal node glow
+            ctx.fillStyle = "#dfc89f"; ctx.fillRect(nec3.x + 6, nec3.y - 8, 5, 5);
 
-            // Scrying Orb Energy Glow
-            ctx.fillStyle = "#52b752";
-            ctx.shadowColor = "#52b752";
-            ctx.shadowBlur = 8 + Math.sin(necro.pulse) * 4;
-            ctx.beginPath();
-            ctx.arc(nPt.x, nPt.y - 4, 2.5, 0, Math.PI*2);
-            ctx.fill();
-            ctx.shadowBlur = 0;
-
-            requestAnimationFrame(runLoop);
+            requestAnimationFrame(render);
         }
-        runLoop();
+        render();
     </script>
     ''', height=280)
     st.markdown('</div>', unsafe_allow_html=True)
 
-# 2. CENTER PANEL: MAIN ALTAR WITH DETAILED VIEWS CAROUSEL GRID
+# 2. CENTER PANEL: MAIN ALTAR DISPLAY & INTERACTIVE TIME-SERIES REVENUE CHART
 with col_center:
     st.markdown('<div class="gothic-panel">', unsafe_allow_html=True)
     st.markdown(f'<div class="panel-title">🏆 RANK #{curr_item["rank"]} DISPLAY</div>', unsafe_allow_html=True)
     
     img_col, info_col = st.columns([1.1, 1.3])
     with img_col:
-        # Single-click direct hyperlink mapping over the product artwork frame
+        # Image acts as a single-click pass-through link
         st.markdown(f'''
             <a href="{curr_item["url"]}" target="_blank" style="text-decoration:none; display:block; text-align:center;">
-                <div style="border:3px solid #4a3f2e; background-color:#050505; padding:4px; box-shadow:0 0 15px #000; display:inline-block; width:100%;">
-                    <img src="{curr_item["img"]}" style="width:100%; max-height:165px; object-fit:contain;" />
+                <div style="border:2px solid #4a3f2e; background-color:#030303; padding:4px; box-shadow:0 0 12px #000;">
+                    <img src="{curr_item["img"]}" style="width:100%; max-height:155px; object-fit:contain;" />
                 </div>
             </a>
         ''', unsafe_allow_html=True)
     with info_col:
-        # Title acts as a direct standalone anchor bypass 
-        st.markdown(f'<h3 style="margin-top:0; margin-bottom:6px; font-size:1.15rem;"><a href="{curr_item["url"]}" class="product-link" target="_blank">{curr_item["name"]}</a></h3>', unsafe_allow_html=True)
-        st.markdown(f"<span style='color:#8c7d67;'>Source:</span> <span style='color:#dfc89f;'>{curr_item['source']}</span>", unsafe_allow_html=True)
-        st.markdown(f"<span style='color:#8c7d67;'>Price:</span> <span style='color:#4caf50; font-weight:bold; font-size:1.1rem;'>{curr_item['price']}</span>", unsafe_allow_html=True)
+        # Title incorporates an optimized hyperlinked active line configuration
+        st.markdown(f'<h3 style="margin-top:0; margin-bottom:6px; font-size:1.15rem;"><a href="{curr_item["url"]}" class="product-link" target="_blank">Product: {curr_item["name"]}</a></h3>', unsafe_allow_html=True)
+        st.markdown(f"<span style='color:#8c7d67; font-family:serif;'>Source:</span> <span style='color:#dfc89f;'>{curr_item['source']}</span>", unsafe_allow_html=True)
+        st.markdown(f"<span style='color:#8c7d67; font-family:serif;'>Listed Value:</span> <span style='color:#4caf50; font-weight:bold;'>{curr_item['price']}</span>", unsafe_allow_html=True)
         
-        # Immediate outbound gateway option
+        # Outbound anchor redirect button
         st.markdown(f'''
             <a href="{curr_item["url"]}" target="_blank" style="text-decoration: none;">
-                <div style="background: linear-gradient(to bottom, #3b3124, #1c1711); color: #dfc89f; text-align: center; padding: 6px; border: 1px solid #554733; border-radius: 2px; font-weight: bold; cursor: pointer; margin-top: 12px; font-family: Georgia, serif; font-size: 0.8rem; letter-spacing:0.5px;">
-                    🔗 Direct Link to Storefront
+                <div style="background: linear-gradient(to bottom, #3b3124, #1c1711); color: #dfc89f; text-align: center; padding: 6px; border: 1px solid #554733; border-radius: 2px; font-weight: bold; cursor: pointer; margin-top: 15px; font-family: Georgia, serif; font-size: 0.8rem; letter-spacing:0.5px;">
+                    🔗 Open Marketplace Link
                 </div>
             </a>
         ''', unsafe_allow_html=True)
 
-    # Detailed Views Carousel Selectors Grid matching item socket lookups
-    st.markdown('<div style="font-size:0.75rem; color:#8c7d67; margin-top:12px; margin-bottom:4px; font-family:Georgia;">Detailed Views (Click to zoom):</div>', unsafe_allow_html=True)
+    # Detailed Views socket frames array explicitly underneath image frame
+    st.markdown('<div style="font-size:0.75rem; color:#8c7d67; margin-top:12px; margin-bottom:6px; font-family:Georgia;">Detailed Views (Click to zoom):</div>', unsafe_allow_html=True)
     thumb_cols = st.columns(5)
     for t_idx in range(5):
         with thumb_cols[t_idx]:
-            is_thumb_active = (t_idx == st.session_state.selected_thumb)
-            border_cls = "active" if is_thumb_active else ""
+            is_active_thumb = (t_idx == st.session_state.selected_thumb)
+            active_cls = "active" if is_active_thumb else ""
             
-            # Encapsulate thumbnail layout inside safe programmatic rerun state triggers
             st.markdown(f'''
-                <div class="thumb-frame {border_cls}" style="width:100%; text-align:center;">
-                    <img src="{curr_item["img"]}" style="width:100%; height:32px; object-fit:cover; opacity:{'1.0' if is_thumb_active else '0.55'};" />
+                <div class="thumb-frame {active_cls}">
+                    <img src="{curr_item["img"]}" style="width:100%; height:30px; object-fit:cover; opacity:{'1.0' if is_active_thumb else '0.45'};" />
                 </div>
             ''', unsafe_allow_html=True)
-            if st.button("🔍", key=f"thumb_trigger_{t_idx}"):
+            if st.button("🔍", key=f"zoom_thumb_{t_idx}"):
                 st.session_state.selected_thumb = t_idx
                 st.rerun()
 
-    st.markdown('<hr style="border:0.5px dashed #3a3124; margin:12px 0;">', unsafe_allow_html=True)
-    st.markdown('<div class="panel-title" style="font-size:0.85rem; margin-bottom:8px;">📊 SALES METRIC GRAPH</div>', unsafe_allow_html=True)
+    st.markdown('<hr style="border:0.5px dashed #3a3124; margin:14px 0;">', unsafe_allow_html=True)
     
-    # 7-Day Interactive Custom Component Drilldown Setup
+    # Chart instructions explicitly configured as detailed in the instructions
+    st.markdown(f'<div class="panel-title" style="font-size:0.85rem; margin-bottom:4px;">📊 SALES METRIC GRAPH</div>', unsafe_allow_html=True)
+    st.markdown(f"<div style='text-align:center; font-size:0.75rem; color:#8c7d67; margin-bottom:8px; font-family:monospace;'>(Click bar for daily breakdown; current selection: <span style='color:#e59422; font-weight:bold;'>{st.session_state.drill_day} [Hour Curve...]</span>)</div>", unsafe_allow_html=True)
+    
+    # 7-Day Interactive Toggle Matrix
     days_list = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-    max_units = curr_item['sales_days']['Units Sold'].max()
-    
     cols_bars = st.columns(7)
     for idx, day_lbl in enumerate(days_list):
         with cols_bars[idx]:
             day_data = curr_item['sales_days'][curr_item['sales_days']['Day'] == day_lbl].iloc[0]
             units = day_data['Units Sold']
             
-            is_active = (day_lbl == st.session_state.drill_day)
-            lbl_color = "#e5a93c" if is_active else "#dfc89f"
-            
-            if st.button(f"{day_lbl}\n({units})", key=f"bar_trigger_{day_lbl}"):
+            if st.button(f"{day_lbl}\n({units})", key=f"graph_bar_{day_lbl}"):
                 st.session_state.drill_day = day_lbl
                 st.rerun()
 
-    # Dynamic line layer parsing hourly distributions safely underneath
+    # Corresponding Hourly Distribution Data Curve Layer below
     fig_hours = px.line(curr_item['sales_hours'][st.session_state.drill_day], x='Hour', y='Units Sold', markers=True)
     fig_hours.update_traces(line_color='#e59422', marker=dict(size=4, color='#dfc89f'))
     fig_hours.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#a6967d', height=105, margin=dict(l=5, r=5, t=5, b=5))
@@ -388,13 +365,13 @@ with col_center:
 
     st.markdown('</div>', unsafe_allow_html=True)
 
-# 3. RIGHT PANEL: TOP 10 TRENDING ITEMS (With direct functional outbound hyperlinks)
+# 3. RIGHT PANEL: TOP 10 TRENDING ITEMS (Strictly Text-Only Content Matrix Layout)
 with col_right:
     st.markdown('<div class="gothic-panel">', unsafe_allow_html=True)
-    st.markdown('<div class="panel-title">⚡ TOP 10 TRENDING</div>', unsafe_allow_html=True)
+    st.markdown('<div class="panel-title">⚡ TOP 10 TRENDING ITEMS (OFF-RANKING)</div>', unsafe_allow_html=True)
     
     trending_sheet = [
-        ("Custom Engraved Moon Lamp", "Etsy", "https://www.etsy.com/search?q=moon+lamp"),
+        ("Custom Engraved Moon Phase Lamp", "Etsy", "https://www.etsy.com/search?q=moon+lamp"),
         ("Smart Reusable Notebook", "Amazon", "https://www.amazon.com/s?k=Smart+Reusable+Notebook"),
         ("Mushroom Coffee Starter Kit", "TikTok Shop", "https://www.tiktok.com/t/ZT887eX7V/"),
         ("Portable Fabric Shaver", "Amazon", "https://www.amazon.com/s?k=Portable+Fabric+Shaver"),
@@ -402,49 +379,58 @@ with col_right:
         ("Cold Brew Coffee Maker", "TikTok Shop", "https://www.tiktok.com/t/ZT887eX7V/"),
         ("Grant Pevetle Loop Short", "Amazon", "https://www.amazon.com/s?k=Loop+Short"),
         ("Portable Winie Shoer", "Amazon", "https://www.amazon.com/s?k=Portable+Shoer"),
-        ("Pilicone Coffee Maker", "TikTok Shop", "https://www.tiktok.com/t/ZT887eX7V/"),
+        ("Silicone Coffee Maker", "TikTok Shop", "https://www.tiktok.com/t/ZT887eX7V/"),
         ("Mushroom Coffee Maker", "TikTok Shop", "https://www.tiktok.com/t/ZT887eX7V/")
     ]
     
+    st.markdown('<div class="trending-box">', unsafe_allow_html=True)
     for idx, (t_name, t_src, t_url) in enumerate(trending_sheet, 1):
         st.markdown(f"""
-        <div style="margin-bottom: 5px; font-size: 0.78rem; line-height:1.2;">
-            {idx}. <a href="{t_url}" class="product-link" target="_blank">{t_name}</a> <br>
-            <span style="color: #615647; font-size: 0.68rem; font-family:monospace;">[{t_src.upper()}]</span>
+        <div style="margin-bottom: 5px; line-height:1.2;">
+            {idx}. <a href="{t_url}" class="product-link" target="_blank">{t_name}</a> 
+            <span style="color: #8c7d67; font-size: 0.7rem; font-family:monospace;">[{t_src.upper()}]</span>
         </div>
         """, unsafe_allow_html=True)
         if idx < 10:
-            st.markdown('<hr style="margin: 3px 0; border: 0.5px solid #282118;">', unsafe_allow_html=True)
+            st.markdown('<hr style="margin: 3px 0; border: 0.5px solid #2a2219;">', unsafe_allow_html=True)
             
+    st.markdown('''
+        <div class="trending-note">
+            <strong>Note:</strong> These items have high velocity but haven't reached Top 15 sales pools yet.
+        </div>
+    </div>''', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
-# --- LOWER HORIZONTAL RUNNER-UP INVENTORY GRID (RANKS 1-15) ---
-st.markdown('<div style="margin-top: 15px; margin-bottom: 8px; font-family:\'Georgia\'; color:#dfc89f; font-size:1.0rem; text-align:center; text-transform:uppercase; letter-spacing:1px;">Inventory Retail Grid (Equip Item to Altar)</div>', unsafe_allow_html=True)
+# --- LOWER EXPANDED GRID: 14 ITEM INTERACTIVE ALTAR OVERVIEW (RANKS 2-15) ---
+st.markdown('<div style="margin-top: 20px; margin-bottom: 8px; font-family:\'Georgia\'; color:#dfc89f; font-size:0.95rem; text-align:center; text-transform:uppercase; letter-spacing:1.5px;">Inventory Scavenged Repository (Equip to Swap Central Altar)</div>', unsafe_allow_html=True)
 
 grid_cols = st.columns(5)
 for i in range(15):
     col_slot = i % 5
     item_node = top_items[i]
     is_equipped = (i == st.session_state.selected_idx)
+    equipped_cls = "equipped" if is_equipped else ""
     
     with grid_cols[col_slot]:
-        equipped_cls = "equipped" if is_equipped else ""
-        
         st.markdown(f"""
         <div class="inventory-card-frame {equipped_cls}">
-            <div style="font-size: 0.72rem; color:#dfc89f; font-family:Georgia; margin-bottom:3px; font-weight:bold;">RANK #{item_node['rank']}</div>
-            <a href="{item_node['url']}" target="_blank" style="text-decoration:none; display:block; margin-bottom:4px;">
-                <img src="{item_node['img']}" style="width:100%; height:75px; object-fit:cover; border:1px solid #3a3124; border-radius:2px;" />
+            <div style="font-size:0.75rem; color:#dfc89f; font-family:Georgia; font-weight:bold; margin-bottom:4px;">RANK #{item_node['rank']}</div>
+            <a href="{item_node['url']}" target="_blank" style="text-decoration:none; display:block; margin-bottom:5px;">
+                <img src="{item_node['img']}" style="width:100%; height:80px; object-fit:cover; border:1px solid #3c3326; border-radius:2px;" />
+                <div style="font-size:0.72rem; margin-top:3px; color:#dfc89f; font-family:monospace; text-overflow:ellipsis; white-space:nowrap; overflow:hidden;">{item_node['name']}</div>
             </a>
         """, unsafe_allow_html=True)
         
-        if st.button(f"Equip #{item_node['rank']}", key=f"equip_btn_{i}"):
+        # Altar Swap configuration controller
+        if st.button(f"Equip #{item_node['rank']}", key=f"altar_swap_btn_{i}"):
             st.session_state.selected_idx = i
+            # Reset visual thumbnail zoom position to standard on layout change
+            st.session_state.selected_thumb = 0
             st.rerun()
             
         st.markdown('</div>', unsafe_allow_html=True)
 
-# --- BOT-LEVEL LIVE MONITORING TICKER ---
+# --- LOWER SYSTEM LIVE MONITORING TICKER LOOP LAYER ---
 st.markdown('''
 <div class="live-ticker">
     <strong>[ LIVE MONITORING TICKER ]</strong> &nbsp;&nbsp; Spiking Now: Oversized Hoodies (TikTok Shop) &nbsp;&nbsp;•&nbsp;&nbsp; <span style="color:#dfc89f;">🚀 Hot Lead: Magnetic Wireless Car Mount (AliExpress)</span> &nbsp;&nbsp;•&nbsp;&nbsp; Rising Interest: Retro Gaming Consoles (Etsy)...
