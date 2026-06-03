@@ -1,320 +1,369 @@
 import streamlit as st
+import pandas as pd
+import plotly.express as px
 import random
-import time
-from datetime import datetime, timedelta
 
-# --- DIABLO IV ADVANCED INTERFACE STYLING ---
-st.set_page_config(layout="wide", page_title="The Horadric Archive", page_icon="💀")
+# Page config for high-end cinematic dashboard aspect ratio
+st.set_page_config(page_title="Global Retail Scavenger", layout="wide", initial_sidebar_state="collapsed")
 
-st.markdown("""
-    <style>
-    /* Dark Sanctuary Core Theme */
+# Sleek Premium Dark UI Style Architecture (Neo-Brutalist Glassmorphism)
+st.markdown('''
+<style>
+    /* Global Page Overrides */
     .stApp {
-        background-color: #0b0705;
-        color: #d1c4b2;
-        font-family: 'Cinzel', 'Georgia', serif;
+        background-color: #080b11;
+        color: #e2e8f0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background-image: 
+            radial-gradient(at 0% 0%, rgba(31, 38, 135, 0.15) 0px, transparent 50%),
+            radial-gradient(at 100% 100%, rgba(127, 0, 255, 0.1) 0px, transparent 50%);
     }
     
-    /* Gothic Titles with Crimson Under-Glow */
-    h1, h2, h3, h4 {
-        color: #b39256 !important;
-        text-shadow: 2px 2px 4px #000000, 0 0 10px #800000;
-        font-family: 'Cinzel', 'Georgia', serif;
-        letter-spacing: 1px;
+    /* Elegant Modern Typography */
+    h1, h2, h3, h4, h5, h6 {
+        color: #ffffff;
+        font-weight: 700;
+        letter-spacing: -0.025em;
+    }
+
+    /* Premium Glass Panels */
+    .premium-card {
+        background: rgba(17, 24, 39, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        margin-bottom: 20px;
     }
     
-    /* Central Focus Item Frame (Diablo Legendary Border Accent) */
-    .legendary-vault-frame {
-        background: linear-gradient(180deg, #17100b 0%, #080504 100%);
-        border: 2px dashed #b39256;
-        box-shadow: 0px 0px 25px rgba(184, 134, 11, 0.4);
-        padding: 25px;
-        border-radius: 4px;
-        text-align: center;
-        margin-bottom: 25px;
-    }
-    
-    /* Diablo IV Style Inventory Item Slot Tile */
-    .inventory-slot-box {
-        background: linear-gradient(135deg, #140e0a 0%, #0b0705 100%);
-        border: 2px solid #36281c;
-        padding: 15px;
-        border-radius: 3px;
+    .card-title {
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #94a3b8;
+        font-weight: 600;
         margin-bottom: 15px;
-        box-shadow: inset 0 0 15px #000000;
-        transition: all 0.2s ease-in-out;
+        display: flex;
+        align-items: center;
+        gap: 8px;
     }
-    .inventory-slot-box:hover {
-        border-color: #9e2216;
-        box-shadow: 0 0 12px #9e2216;
+
+    /* Item Tile Grid Matrix */
+    .tile-container {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        padding: 10px;
+        text-align: center;
+        transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .tile-container:hover {
+        transform: translateY(-2px);
+        border-color: #00f2fe;
+        box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
     }
     
-    /* Core Content Action Buttons styled as Runes */
-    .stButton>button {
-        background-color: #1c130c;
-        color: #b39256;
-        border: 1px solid #543f2b;
-        font-weight: bold;
+    /* Source Platform Tags */
+    .platform-tag {
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: 4px;
+        display: inline-block;
+        margin-top: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+    }
+    .tag-amazon { background-color: rgba(255, 153, 0, 0.15); color: #ff9900; border: 1px solid rgba(255, 153, 0, 0.3); }
+    .tag-etsy { background-color: rgba(241, 100, 30, 0.15); color: #f1641e; border: 1px solid rgba(241, 100, 30, 0.3); }
+    .tag-tiktok { background-color: rgba(0, 242, 254, 0.15); color: #00f2fe; border: 1px solid rgba(0, 242, 254, 0.3); }
+    .tag-aliexpress { background-color: rgba(230, 0, 51, 0.15); color: #e60033; border: 1px solid rgba(230, 0, 51, 0.3); }
+
+    /* Clean Image Handling */
+    .tile-img {
         width: 100%;
-        border-radius: 2px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 6px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Native Clean Navigation Links */
+    a.clean-anchor {
+        text-decoration: none;
+        color: inherit;
+    }
+    a.clean-anchor:hover {
+        color: #00f2fe;
+    }
+
+    /* Selection Trigger Buttons */
+    .stButton>button {
+        background: rgba(255, 255, 255, 0.05);
+        color: #e2e8f0;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 6px;
+        padding: 4px 10px;
+        font-size: 0.8rem;
         transition: all 0.2s;
     }
     .stButton>button:hover {
-        background-color: #8a0000;
-        color: #ffffff;
-        border-color: #ff0000;
-        box-shadow: 0px 0px 8px #8a0000;
+        background: #00f2fe;
+        color: #080b11;
+        border-color: #00f2fe;
     }
-    
-    /* Real Product Hyperlinks */
-    a {
-        color: #e63929 !important;
-        text-decoration: none;
-        font-weight: bold;
-    }
-    a:hover {
-        color: #ff857a !important;
-        text-shadow: 0 0 6px #ff0000;
-    }
-    </style>
-""", unsafe_allow_html=True)
+</style>
+''', unsafe_allow_html=True)
 
-
-# --- LIVE SELLING MATRIX GENERATOR ---
-def fetch_sanctuary_market_feed():
-    # Strict dictionary pairing verified selling items, matching URLs, and clean authentic image links
-    products_pool = [
-        {
-            "title": "Owala FreeSip Insulated Stainless Steel Triple-Layer Water Bottle", 
-            "source": "Amazon", 
-            "url": "https://www.amazon.com/s?k=Owala+FreeSip+Water+Bottle",
-            "img": "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=400&auto=format&fit=crop&q=80"
-        },
-        {
-            "title": "Handcrafted Woodland Mushroom Ceramic Artisan Coffee Mug", 
-            "source": "Etsy", 
-            "url": "https://www.etsy.com/search?q=mushroom+ceramic+mug",
-            "img": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400&auto=format&fit=crop&q=80"
-        },
-        {
-            "title": "Sunset Projection Ambient LED Halo Night Atmosphere Lamp", 
-            "source": "TikTok Shop", 
-            "url": "https://www.tiktok.com/explore",
-            "img": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&auto=format&fit=crop&q=80"
-        },
-        {
-            "title": "Anker Magnetic Wireless Power Bank 10K Slim Battery Pack", 
-            "source": "Amazon", 
-            "url": "https://www.amazon.com/s?k=Anker+Magnetic+Wireless+Power+Bank",
-            "img": "https://images.unsplash.com/photo-1620288627223-53302f4e8c74?w=400&auto=format&fit=crop&q=80"
-        },
-        {
-            "title": "Vintage Heavyweight Corduroy Zippered Daily Tote Bag", 
-            "source": "Etsy", 
-            "url": "https://www.etsy.com/search?q=corduroy+tote+bag",
-            "img": "https://images.unsplash.com/photo-1544816155-12df9643f363?w=400&auto=format&fit=crop&q=80"
-        },
-        {
-            "title": "Phomemo Mini Pocket Wireless Bluetooth Thermal Sticker Printer", 
-            "source": "Amazon", 
-            "url": "https://www.amazon.com/s?k=Phomemo+Mini+Thermal+Printer",
-            "img": "https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=400&auto=format&fit=crop&q=80"
-        },
-        {
-            "title": "Bedsure Orthopedic Calming High-Density Foam Dog Bed", 
-            "source": "Amazon", 
-            "url": "https://www.amazon.com/s?k=Bedsure+Orthopedic+Dog+Bed",
-            "img": "https://images.unsplash.com/photo-1541599540903-216a46cc1ad6?w=400&auto=format&fit=crop&q=80"
-        },
-        {
-            "title": "Y2K Star Patch Heavy-Cotton Full Zip Streetwear Hoodie", 
-            "source": "TikTok Shop", 
-            "url": "https://www.tiktok.com/explore",
-            "img": "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=400&auto=format&fit=crop&q=80"
-        },
-        {
-            "title": "Gravity-Activated Automatic Electric Salt & Pepper Grinder Set", 
-            "source": "Amazon", 
-            "url": "https://www.amazon.com/s?k=Electric+Salt+and+Pepper+Grinder+Set",
-            "img": "https://images.unsplash.com/photo-1588854337236-6889d631faa8?w=400&auto=format&fit=crop&q=80"
-        },
-        {
-            "title": "Boho Tufted Macrame Geometric Accent Woven Pillow Cover Set", 
-            "source": "Etsy", 
-            "url": "https://www.etsy.com/search?q=Boho+Tufted+Pillow+Cover",
-            "img": "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?w=400&auto=format&fit=crop&q=80"
-        },
-        {
-            "title": "Bleame Magic Crystal Hair Eraser Painless Exfoliator Tool", 
-            "source": "TikTok Shop", 
-            "url": "https://www.tiktok.com/explore",
-            "img": "https://images.unsplash.com/photo-1608248597481-496100c80836?w=400&auto=format&fit=crop&q=80"
-        },
-        {
-            "title": "Self-Squeezing Hands-Free Absorbent Mini Desktop Mop Tool", 
-            "source": "TikTok Shop", 
-            "url": "https://www.tiktok.com/explore",
-            "img": "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&auto=format&fit=crop&q=80"
-        },
-        {
-            "title": "Premium Traditional Ceremony 100-Prong Bamboo Matcha Whisk Set", 
-            "source": "Etsy", 
-            "url": "https://www.etsy.com/search?q=Matcha+Whisk+Set",
-            "img": "https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=400&auto=format&fit=crop&q=80"
-        },
-        {
-            "title": "Splash-Proof Raised Spill Lip Silicone Pet Feeding Mat Tray", 
-            "source": "Amazon", 
-            "url": "https://www.amazon.com/s?k=Silicone+Pet+Feeding+Mat",
-            "img": "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=400&auto=format&fit=crop&q=80"
-        },
-        {
-            "title": "Smart LED Cap Temperature Sensing Vacuum Insulated Flask", 
-            "source": "TikTok Shop", 
-            "url": "https://www.tiktok.com/explore",
-            "img": "https://images.unsplash.com/photo-1523362628745-0c100150b504?w=400&auto=format&fit=crop&q=80"
-        },
-        # Top 10 Trending Items (No Images per specifications)
-        {"title": "Minimalist Full-Grain Leather MagSafe Slim Card Wallet", "source": "Etsy", "url": "https://www.etsy.com/search?q=Leather+MagSafe+Wallet"},
-        {"title": "Ergonomic Memory Foam Contoured Joint Wrist Rest Combo", "source": "Amazon", "url": "https://www.amazon.com/s?k=Ergonomic+Wrist+Rest+Set"},
-        {"title": "Rechargeable Multi-Spectrum Eye-Care Reading Book Light Clip", "source": "Amazon", "url": "https://www.amazon.com/s?k=Clip+on+Book+Light"},
-        {"title": "Organic Cold-Pressed Fortifying Rosemary Scalp Nutrition Oil", "source": "TikTok Shop", "url": "https://www.tiktok.com/explore"},
-        {"title": "Handmade Wooden Celestial Phase Moon Wall Hanging Decor", "source": "Etsy", "url": "https://www.etsy.com/search?q=Moon+Phase+Wall+Hanging"},
-        {"title": "High-Velocity Cordless Electric Compressed Air Can Duster", "source": "Amazon", "url": "https://www.amazon.com/s?k=Electric+Air+Duster"},
-        {"title": "Geometric Nordic Bubble Cube Pure Soy Aesthetic Candle", "source": "Etsy", "url": "https://www.etsy.com/search?q=Bubble+Cube+Candle"},
-        {"title": "High-Density Non-Slip Eco-Polymer Daily Fitness Yoga Mat", "source": "Amazon", "url": "https://www.amazon.com/s?k=High+Density+Yoga+Mat"},
-        {"title": "Collapsible Food-Grade Travel Packable Silicone Cup", "source": "TikTok Shop", "url": "https://www.tiktok.com/explore"},
-        {"title": "Multi-Device Wireless Ergonomic Precision Trackpad Mouse", "source": "Amazon", "url": "https://www.amazon.com/s?k=Wireless+Bluetooth+Mouse"}
-    ]
-
-    processed = []
-    for idx, item in enumerate(products_pool):
-        # Generate data arrays modeling high volume sales performance 
-        historical_7_days = [random.randint(800, 3400) for _ in range(7)]
-        hourly_matrix = {f"Day {d+1}": [random.randint(30, 180) for _ in range(24)] for d in range(7)}
-        
-        processed.append({
-            "title": item["title"],
-            "source": item["source"],
-            "url": item["url"],
-            "img_url": item.get("img", ""), # Only top 15 contain images
-            "total_sales": sum(historical_7_days),
-            "weekly_sales": historical_7_days,
-            "hourly_sales": hourly_matrix
-        })
-
-    # Sort strictly by transaction performance to lock down hierarchy order
-    sorted_ledger = sorted(processed, key=lambda x: x["total_sales"], reverse=True)
-    
-    for rank_idx, record in enumerate(sorted_ledger):
-        record["rank"] = rank_idx + 1
-        
-    return sorted_ledger[:15], sorted_ledger[15:]
-
-
-# --- COMPUTE SCRYING CACHE INTERVALS ---
-if "last_refresh" not in st.session_state:
-    st.session_state.last_refresh = datetime.now() - timedelta(hours=4)
-    st.session_state.top_15 = []
-    st.session_state.top_10_rising = []
-    st.session_state.active_rank = 1
-
-time_delta = datetime.now() - st.session_state.last_refresh
-
-# --- RITUAL IN PROGRESS: VISUALLY ACTIVE NECROMANCER ---
-if time_delta.total_seconds() >= 10800 or len(st.session_state.top_15) == 0:
-    st.markdown("### 💀 THE NECROMANCER CONJURES THE SCRYING RITUAL...")
-    
-    ritual_gauge = st.progress(0)
-    incantation_prompt = st.empty()
-    
-    spells = [
-        "🩸 Drawing runic bounding boxes over Amazon's centralized inventory database...",
-        "🦴 Forging skeleton proxies to siphon transaction logs out of Etsy's servers...",
-        "🔮 Piercing into the shadow matrix of TikTok Shop item vectors...",
-        "📜 Binding collected marketplace metrics back onto the Horadric UI plate..."
+# Generate Mock Dataset with live retail single-click anchors and authentic imagery
+@st.cache_data
+def load_scavenger_intelligence():
+    items = [
+        {"rank": 1, "name": "Minimalist Mechanical Keyboard", "source": "Amazon", "price": "$119.00", "url": "https://www.amazon.com/s?k=Mechanical+Keyboard", "img": "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=500&auto=format&fit=crop&q=80"},
+        {"rank": 2, "name": "Matte Black Travel Tumbler", "source": "Amazon", "price": "$38.00", "url": "https://www.amazon.com/s?k=Travel+Tumbler", "img": "https://images.unsplash.com/photo-1577937927133-66ef06acdf18?w=500&auto=format&fit=crop&q=80"},
+        {"rank": 3, "name": "Ergonomic Office Chair", "source": "Amazon", "price": "$289.50", "url": "https://www.amazon.com/s?k=Ergonomic+Office+Chair", "img": "https://images.unsplash.com/photo-1505797149-43b0069ec26b?w=500&auto=format&fit=crop&q=80"},
+        {"rank": 4, "name": "Leather Desk Mat (Large)", "source": "Etsy", "price": "$45.00", "url": "https://www.etsy.com/search?q=Leather+Desk+Mat", "img": "https://images.unsplash.com/photo-1632292224971-0d45778bd364?w=500&auto=format&fit=crop&q=80"},
+        {"rank": 5, "name": "Concrete Succulent Planter", "source": "Etsy", "price": "$22.00", "url": "https://www.etsy.com/search?q=Concrete+Planter", "img": "https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=500&auto=format&fit=crop&q=80"},
+        {"rank": 6, "name": "Handcrafted Leather Wallet", "source": "Etsy", "price": "$54.00", "url": "https://www.etsy.com/search?q=Leather+Wallet", "img": "https://images.unsplash.com/photo-1627123424574-724758594e93?w=500&auto=format&fit=crop&q=80"},
+        {"rank": 7, "name": "Smart Ambient RGB Strip", "source": "TikTok Shop", "price": "$15.99", "url": "https://www.tiktok.com/market", "img": "https://images.unsplash.com/photo-1565814636199-ae8133055c1c?w=500&auto=format&fit=crop&q=80"},
+        {"rank": 8, "name": "Viral Portable Blender", "source": "TikTok Shop", "price": "$29.95", "url": "https://www.tiktok.com/market", "img": "https://images.unsplash.com/photo-1578643463396-0997cb5328c1?w=500&auto=format&fit=crop&q=80"},
+        {"rank": 9, "name": "Premium Snail Mucin Serum", "source": "TikTok Shop", "price": "$19.00", "url": "https://www.tiktok.com/market", "img": "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=500&auto=format&fit=crop&q=80"},
+        {"rank": 10, "name": "MagSafe Wireless Power Bank", "source": "AliExpress", "price": "$14.20", "url": "https://www.aliexpress.com", "img": "https://images.unsplash.com/photo-1609592424109-dd9892f1b17c?w=500&auto=format&fit=crop&q=80"},
+        {"rank": 11, "name": "Ultra-thin GaN Charger 65W", "source": "AliExpress", "price": "$11.50", "url": "https://www.aliexpress.com", "img": "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=500&auto=format&fit=crop&q=80"},
+        {"rank": 12, "name": "RGB LED Pocket Video Light", "source": "AliExpress", "price": "$18.90", "url": "https://www.aliexpress.com", "img": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=500&auto=format&fit=crop&q=80"},
+        {"rank": 13, "name": "Active Noise Cancelling Buds", "source": "Amazon", "price": "$89.99", "url": "https://www.amazon.com/s?k=Wireless+Earbuds", "img": "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=500&auto=format&fit=crop&q=80"},
+        {"rank": 14, "name": "Minimalist Titanium Key Loop", "source": "Etsy", "price": "$31.00", "url": "https://www.etsy.com/search?q=Titanium+Key+Loop", "img": "https://images.unsplash.com/photo-1582139329536-e7284fece509?w=500&auto=format&fit=crop&q=80"},
+        {"rank": 15, "name": "High Velocity Desk Fan", "source": "Amazon", "price": "$34.99", "url": "https://www.amazon.com/s?k=Desk+Fan", "img": "https://images.unsplash.com/photo-1618944847828-82e943c3beb5?w=500&auto=format&fit=crop&q=80"}
     ]
     
-    for stage in range(4):
-        incantation_prompt.markdown(f"***Ritual Progress:*** *{spells[stage]}*")
-        ritual_gauge.progress((stage + 1) * 25)
-        time.sleep(1.0)
+    days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+    for item in items:
+        random.seed(item['rank'])
+        base_sales = random.randint(500, 2500)
+        item['sales_days'] = pd.DataFrame({'Day': days, 'Units Sold': [int(base_sales * random.uniform(0.8, 1.3)) for _ in days]})
         
-    st.session_state.top_15, st.session_state.top_10_rising = fetch_sanctuary_market_feed()
-    st.session_state.last_refresh = datetime.now()
-    st.session_state.active_rank = 1 # Re-align spotlight focus to rank 1
-    st.rerun()
+        item['sales_hours'] = {}
+        for day in days:
+            hourly_data = [int((base_sales / 24) * (1 + 0.5 * random.uniform(-0.6, 1.0))) for _ in range(24)]
+            item['sales_hours'][day] = pd.DataFrame({'Hour': [f"{h:02d}:00" for h in range(24)], 'Units Sold': hourly_data})
+            
+    return items
 
+retrieved_items = load_scavenger_intelligence()
 
-# --- INTERFACE TIMELINE TRACKER ---
-time_remaining = (st.session_state.last_refresh + timedelta(hours=3)) - datetime.now()
-st.sidebar.markdown(f"⏳ **Next Autonomous Refresh:** *In {int(time_remaining.total_seconds() // 60)} minutes*")
-st.sidebar.markdown("---")
+# Initialize Navigation / Click Drill-Down Session States
+if 'selected_idx' not in st.session_state:
+    st.session_state.selected_idx = 0
+if 'selected_day' not in st.session_state:
+    st.session_state.selected_day = 'Wed'
 
-# Extract Reference Values for Spotlight Display
-spotlight_item = next(p for p in st.session_state.top_15 if p['rank'] == st.session_state.active_rank)
+selected_item = retrieved_items[st.session_state.selected_idx]
 
+# --- PREMIUM DASHBOARD APP BAR ---
+st.markdown('''
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; margin-bottom: 10px;">
+    <div>
+        <h2 style="margin: 0; font-size: 1.5rem; font-weight: 800; letter-spacing: -0.04em; background: linear-gradient(90deg, #ffffff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">DATA SCAVENGER ENGINE</h2>
+        <p style="margin: 0; font-size: 0.75rem; color: #4caf50; font-family: monospace; letter-spacing: 0.05em;">● TELEMETRY ONLINE // CROSS-RETAILER ENDPOINTS SYNCED</p>
+    </div>
+    <div style="font-size:0.8rem; color: #64748b; font-family: monospace; border: 1px solid rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 6px; background: rgba(255,255,255,0.01);">
+        METRIC CYCLE: <span style="color: #00f2fe; font-weight: bold;">LIVE SESSION</span>
+    </div>
+</div>
+''', unsafe_allow_html=True)
 
-# --- CHARACTER CONTROL LAYOUT SHEET ---
-left_panel, right_panel = st.columns([5, 4])
+# --- THREE ASYMMETRICAL COLUMN STRUCTURE ---
+col_left, col_center, col_right = st.columns([1.3, 1.7, 1])
 
-with left_panel:
-    # 1. CENTRAL DISPLAY SYSTEM (#1 SELLER HIGHLIGHT)
-    st.markdown('<div class="legendary-vault-frame">', unsafe_allow_html=True)
-    if spotlight_item['rank'] == 1:
-        st.markdown("### 🏆 THE CROWN ARTIFACT (GLOBAL RANK #1 SELLER)")
-    else:
-        st.markdown(f"### 🔮 EXAMINING VAULT ARTIFACT POSITION #{spotlight_item['rank']}")
-        
-    st.markdown(f"## [{spotlight_item['title']}]({spotlight_item['url']})")
-    st.markdown(f"**Market Origin:** `{spotlight_item['source']}` | **7-Day Transaction Ledger:** {spotlight_item['total_sales']:,} Units")
+# ==================== LEFT COLUMN ====================
+with col_left:
+    # Top Left Widget: High-Tech Node Ingestion Animation
+    st.markdown('<div class="premium-card">', unsafe_allow_html=True)
+    st.markdown('<div class="card-title">📡 NETWORK INGESTION FLOW</div>', unsafe_allow_html=True)
     
-    # Showcase single item image matching link context 
-    st.image(spotlight_item['img_url'], width=380, caption="Verified Image Asset Source Link Extract")
-    st.markdown('<div style="margin-top:10px;"><small>⚠️ Click any slot on the right panel to map its runic data onto the graph below.</small></div>', unsafe_allow_html=True)
+    st.components.v1.html('''
+    <div style="position:relative; width:100%; height:140px; background:#0b0f17; border-radius:8px; border:1px solid rgba(255,255,255,0.05); overflow:hidden;">
+        <canvas id="neuralCanvas" style="position:absolute; top:0; left:0; width:100%; height:100%;"></canvas>
+    </div>
+    <script>
+        const canvas = document.getElementById('neuralCanvas');
+        const ctx = canvas.getContext('2d');
+        function initSize() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+        }
+        initSize();
+        
+        const nodes = [
+            {name:"Amazon", x: 30, y: 30, color:"#ff9900"},
+            {name:"Etsy", x: 30, y: 110, color:"#f1641e"},
+            {name:"TikTok", x: 110, y: 70, color:"#00f2fe"},
+            {name:"AliExpress", x: 190, y: 30, color:"#e60033"},
+            {name:"HUB", x: 190, y: 110, color:"#7f00ff"}
+        ];
+        
+        let pulses = [];
+        setInterval(() => {
+            let src = nodes[Math.floor(Math.random() * 4)];
+            pulses.push({src: src, dest: nodes[4], t: 0, speed: 0.02});
+        }, 400);
+
+        function drawMatrix() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Grid background lines
+            ctx.strokeStyle = 'rgba(255,255,255,0.02)';
+            ctx.lineWidth = 1;
+            for(let i=0; i<canvas.width; i+=20) { ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,canvas.height); ctx.stroke(); }
+            for(let i=0; i<canvas.height; i+=20) { ctx.beginPath(); ctx.moveTo(0,i); ctx.lineTo(canvas.width,i); ctx.stroke(); }
+            
+            // Connections
+            ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+            for(let i=0; i<4; i++) {
+                ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y); ctx.lineTo(nodes[4].x, nodes[4].y); ctx.stroke();
+            }
+            
+            // Nodes
+            nodes.forEach(n => {
+                ctx.fillStyle = n.color;
+                ctx.beginPath(); ctx.arc(n.x, n.y, 4, 0, Math.PI*2); ctx.fill();
+                ctx.font = "9px system-ui, sans-serif";
+                ctx.fillStyle = "#64748b";
+                ctx.fillText(n.name, n.x + 8, n.y + 3);
+            });
+            
+            // Pulses
+            pulses.forEach((p, idx) => {
+                p.t += p.speed;
+                if(p.t >= 1) { pulses.splice(idx, 1); return; }
+                let cx = p.src.x + (p.dest.x - p.src.x) * p.t;
+                let cy = p.src.y + (p.dest.y - p.src.y) * p.t;
+                ctx.fillStyle = '#ffffff';
+                ctx.beginPath(); ctx.arc(cx, cy, 3, 0, Math.PI*2); ctx.fill();
+            });
+            requestAnimationFrame(drawMatrix);
+        }
+        drawMatrix();
+    </script>
+    ''', height=142)
     st.markdown('</div>', unsafe_allow_html=True)
     
-    # 2. RUNIC CLICKABLE TIME BREAKDOWN GRAPH SYSTEM
-    st.markdown("### 📊 HISTORICAL VELOCITY LEDGER")
-    days_labels = ["Day 1", "Day 2", "Day 3", "Day 4", "Day 5", "Day 6", "Day 7"]
-    st.bar_chart(dict(zip(days_labels, spotlight_item['weekly_sales'])))
+    # Middle Left Widget: 14 Item Tiles Grid
+    st.markdown('<div class="premium-card">', unsafe_allow_html=True)
+    st.markdown('<div class="card-title">📦 RETAIL MATRIX MARKET (RANKS 2-15)</div>', unsafe_allow_html=True)
     
-    st.markdown("#### 👆 Inspect Specific Day Horizons (Hourly Metrics Matrix)")
-    selected_day = st.radio("Target day timeline projection:", days_labels, horizontal=True, key="ledger_radio")
-    
-    hourly_breakdown_metrics = spotlight_item['hourly_sales'][selected_day]
-    st.markdown(f"**Hourly Volume Run Rate for {selected_day}:**")
-    st.bar_chart(hourly_breakdown_metrics)
-
-
-with right_panel:
-    # 3. COMPREHENSIVE RUNIC STASH SCROLL (ALL TOP 15 INCLUDE TITLES, LINKS, & IMAGES SIMULTANEOUSLY)
-    st.markdown("### 🔲 THE HORADRIC INVENTORY (TOP 15)")
-    
-    for prod in st.session_state.top_15:
-        # Visual highlight marker tracking active focal component selection
-        is_active = "⚡ " if prod['rank'] == st.session_state.active_rank else "🩸 "
+    tile_grid = st.columns(2)
+    for idx in range(1, 15):
+        item_node = retrieved_items[idx]
+        grid_col = tile_grid[idx % 2]
         
-        st.markdown(f'<div class="inventory-slot-box">', unsafe_allow_html=True)
-        st.markdown(f"#### {is_active} Rank #{prod['rank']}: [{prod['title']}]({prod['url']})")
-        st.markdown(f"*Market: `{prod['source']}` | Weekly Volume: **{prod['total_sales']:,} units***")
-        
-        # Grid alignment separating product layout frames cleanly
-        img_col, btn_col = st.columns([2, 3])
-        with img_col:
-            # Displays authentic picture for every single top 15 item
-            st.image(prod['img_url'], use_container_width=True)
-        with btn_col:
-            st.markdown("<br>", unsafe_allow_html=True)
-            if st.button("Inspect Runic Stats", key=f"inspect_btn_{prod['rank']}"):
-                st.session_state.active_rank = prod['rank']
+        with grid_col:
+            tag_class = f"tag-{item_node['source'].lower().replace('.','').replace(' shop','')}"
+            st.markdown(f'''
+            <div class="tile-container">
+                <span style="font-size:0.7rem; color:#64748b; font-weight:700; display:block; margin-bottom:4px;">RANK #{item_node['rank']}</span>
+                <a href="{item_node['url']}" target="_blank">
+                    <img src="{item_node['img']}" class="tile-img" />
+                </a>
+                <div class="platform-tag {tag_class}">{item_node['source']}</div>
+            ''', unsafe_allow_html=True)
+            
+            if st.button(f"Analyze #{item_node['rank']}", key=f"select_btn_{idx}"):
+                st.session_state.selected_idx = idx
                 st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
+                
+            st.markdown('</div><div style="margin-bottom:12px;"></div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
-    # 4. TOP 10 TRENDING ITEMS (STRICT TEXT-ONLY SCROLL LIST OUTSIDE THE TOP 15)
-    st.markdown("### 🌑 THE OUTER CIRCLE: TOP 10 RISING SHADOWS")
-    st.caption("Incubating product trends gaining heavy transaction velocity that haven't pierced the top 15 grid yet.")
-    for idx, trend in enumerate(st.session_state.top_10_rising):
-        st.markdown(f"""
-        * 📈 **[RISING SHADOW #{idx+1}]** [{trend['title']}]({trend['url']}) (`{trend['source']}`)
-        """)
+# ==================== CENTER COLUMN ====================
+with col_center:
+    # Prominent Element Display (#1 spot or currently highlighted index node)
+    st.markdown('<div class="premium-card">', unsafe_allow_html=True)
+    is_rank_1 = "✨ HIGHLIGHTED PRODUCT ALTAR" if selected_item['rank'] != 1 else "👑 PROMINENT POSITION #1 RANKING"
+    st.markdown(f'<div class="card-title">{is_rank_1}</div>', unsafe_allow_html=True)
+    
+    show_col1, show_col2 = st.columns([1.1, 1])
+    with show_col1:
+        st.markdown(f'''
+        <a href="{selected_item['url']}" target="_blank">
+            <img src="{selected_item['img']}" style="width:100%; height:230px; object-fit:cover; border-radius:10px; border:1px solid rgba(255,255,255,0.12);" />
+        </a>
+        ''', unsafe_allow_html=True)
+    with show_col2:
+        tag_class = f"tag-{selected_item['source'].lower().replace('.','').replace(' shop','')}"
+        st.markdown(f'''
+        <h3 style="margin-top:0; margin-bottom:6px; font-size:1.2rem; line-height:1.2;">
+            <a href="{selected_item['url']}" target="_blank" class="clean-anchor">{selected_item['name']}</a>
+        </h3>
+        <div class="platform-tag {tag_class}" style="margin-bottom:12px;">{selected_item['source']} Marketplace</div>
+        <p style="margin:0; font-size:0.85rem; color:#64748b;">Estimated Retail Value</p>
+        <h2 style="margin:0; color:#00f2fe; font-size:1.8rem; font-weight:800;">{selected_item['price']}</h2>
+        <div style="margin-top:15px;">
+            <a href="{selected_item['url']}" target="_blank" style="text-decoration:none;">
+                <button style="width:100%; background:#7f00ff; color:white; border:none; padding:8px 12px; border-radius:6px; font-weight:600; cursor:pointer;">🔗 Direct One-Click Storefront</button>
+            </a>
+        </div>
+        ''', unsafe_allow_html=True)
+
+    st.markdown('<hr style="border:1px solid rgba(255,255,255,0.06); margin:20px 0;">', unsafe_allow_html=True)
+    st.markdown('<div class="card-title">📊 METRIC ANALYSIS TOME (7-DAY DRILLDOWN)</div>', unsafe_allow_html=True)
+    
+    # Pill selectors mapping directly to drill down state actions
+    choice_day = st.radio("Select Bar Variable to Map Hourly Delivery Curves:", ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], index=['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].index(st.session_state.selected_day), horizontal=True)
+    if choice_day != st.session_state.selected_day:
+        st.session_state.selected_day = choice_day
+        st.rerun()
+
+    view_tab1, view_tab2 = st.tabs(["7-Day Cumulative Run", f"Hourly Velocity Details ({st.session_state.selected_day})"])
+    
+    with view_tab1:
+        fig_7d = px.bar(selected_item['sales_days'], x='Day', y='Units Sold', color='Units Sold', color_continuous_scale='Purples')
+        fig_7d.update_layout(
+            plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#94a3b8',
+            margin=dict(l=10, r=10, t=10, b=10), coloraxis_showscale=False, height=240
+        )
+        st.plotly_chart(fig_7d, use_container_width=True)
+        
+    with view_tab2:
+        fig_24h = px.line(selected_item['sales_hours'][st.session_state.selected_day], x='Hour', y='Units Sold', markers=True)
+        fig_24h.update_traces(line_color='#00f2fe', marker=dict(size=6, color='#ffffff'))
+        fig_24h.update_layout(
+            plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#94a3b8',
+            margin=dict(l=10, r=10, t=10, b=10), height=240
+        )
+        st.plotly_chart(fig_24h, use_container_width=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# ==================== RIGHT COLUMN ====================
+with col_right:
+    st.markdown('<div class="premium-card" style="height: 100%;">', unsafe_allow_html=True)
+    st.markdown('<div class="card-title">⚡ NEXT 10 MICRO-TRENDING VELOCITIES</div>', unsafe_allow_html=True)
+    
+    micro_trends = [
+        ("Collapsible Silicone Travel Kettle", "Amazon", "https://www.amazon.com/s?k=Collapsible+Silicone+Travel+Kettle"),
+        ("Automatic Smart Self-Stirring Mug", "TikTok Shop", "https://www.tiktok.com/market"),
+        ("Custom Celestial Birth Chart Print", "Amazon", "https://www.amazon.com/s?k=Custom+Celestial+Birth+Chart+Print"),
+        ("Mini Pocket Label Thermal Printer", "Amazon", "https://www.amazon.com/s?k=Mini+Pocket+Label+Thermal+Printer"),
+        ("Electric Jar Vacuum Sealer Machine", "TikTok Shop", "https://www.tiktok.com/market"),
+        ("Premium Titanium EDC Multi-Tool", "AliExpress", "https://www.aliexpress.com"),
+        ("Vintage Ceramic Mushroom Desk Lamp", "Etsy", "https://www.etsy.com/search?q=mushroom+lamp"),
+        ("Aesthetic Abstract Ceramic Vases", "Etsy", "https://www.etsy.com/search?q=ceramic+vase"),
+        ("Ergonomic Memory Foam Wrist Rest", "Amazon", "https://www.amazon.com/s?k=Wrist+Rest"),
+        ("Flame Effect Ultrasonic Air Diffuser", "TikTok Shop", "https://www.tiktok.com/market")
+    ]
+    
+    for i, (t_name, t_src, t_url) in enumerate(micro_trends, 1):
+        st.markdown(f'''
+        <div style="margin-bottom: 14px; font-size: 0.85rem; line-height: 1.4;">
+            <div style="font-weight: 700; color: #ffffff;">
+                {i}. <a href="{t_url}" target="_blank" class="clean-anchor">{t_name}</a>
+            </div>
+            <span style="font-size: 0.7rem; font-weight: bold; color: #64748b; text-transform: uppercase;">[{t_src}]</span>
+        </div>
+        ''', unsafe_allow_html=True)
+        if i < 10:
+            st.markdown('<hr style="margin: 6px 0; border: none; border-top: 1px solid rgba(255,255,255,0.04);">', unsafe_allow_html=True)
+            
+    st.markdown('</div>', unsafe_allow_html=True)
