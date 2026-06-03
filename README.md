@@ -1,27 +1,25 @@
-# 💀 The Horadric Archive - Diablo IV Style E-Commerce Tracker
+# 📊 Global Retail Scavenger Engine Dashboard
 
-An automated, high-fidelity e-commerce tracking dashboard modeled directly after the dark gothic character stash user interface of Diablo IV. This application provides a live snapshot of high-volume items across Amazon, Etsy, and TikTok Shop using an autonomous 3-hour Necromancer scrying ritual engine.
+A premium, high-tech dark theme analytics workspace designed to aggregate, visualize, and monitor competitive retail market velocities across major global storefronts (**Amazon**, **Etsy**, **TikTok Shop**, and **AliExpress**).
 
-## 🔮 Active Mechanics
-* **The Horadric Inventory Grid:** A dual-column layout showcasing the top 15 selling items across online marketplaces. Every single slot displays an authentic product picture mapping back to its destination link.
-* **The Crown Artifact Focus:** A centralized inspection frame displaying the chosen item alongside its core 7-day transaction metrics. 
-* **Temporal Velocity Ledger:** Interactive 7-day sales bar charts. Clicking an individual day instantly parses data down into an hourly transaction velocity run-rate.
-* **Necromancer Scrying Ritual:** A visually active loading sequence that triggers automatically every 3 hours to recalculate and refresh live product trends.
-* **The Outer Circle:** An image-free tracking list displaying the top 10 rising shadows (trending items) before they pierce the primary top 15 grid slots.
+Built natively using Python, Streamlit, HTML5 Canvas, and Plotly.
 
 ---
 
-## 📜 Repository Structure
-* `app.py` - Core application framework housing the Diablo IV global layout style rules and live data loops.
-* `requirements.txt` - Minimalist dependency list containing only the core framework engine.
-* `README.md` - Documentation ledger.
+## 🚀 Key System Features
+
+- **Prominent Rank #1 Spotlight:** The single top-performing product is showcased at the focal center of the architecture with enlarged visual media, active price indexing, and full title data.
+- **14-Node Retail Matrix:** Market positions 2 through 15 are rendered in a clean, space-efficient tile grid on the left. Each tile displays a high-quality product image and a platform-specific badge.
+- **Single-Click Instant Directives:** Every product title and image across the entire dashboard acts as a direct anchor link, taking you straight to the active marketplace listing with a single click.
+- **Live Ingestion Network Flow:** The top-left panel contains a custom HTML5 canvas animation running on an active particle loop, simulating data packets being scavenged from global endpoints in real time.
+- **Deep-Dive Analytics Graphing:** Features an interactive chart engine. By interacting with the dashboard, you can toggle seamlessly between a 7-day cumulative sales layout and a precise 24-hour line graph tracking micro-velocities throughout any selected day.
+- **Off-Ranking Micro-Trends:** The right column actively loops the next 10 items tracking high volume spikes before they break into the absolute Top 15 threshold.
 
 ---
 
-## 🛠️ Deployment Instructions
+## 📂 Project Directory Structure
 
-To deploy this dashboard inside the **Streamlit Community Cloud**:
-1. Commit your `app.py` and `requirements.txt` files into a GitHub repository.
-2. Navigate to the [Streamlit Share Dashboard](https://share.streamlit.io/) and authenticate using your GitHub account.
-3. Select **New App**, locate your specific repository, and point the main file path directly to `app.py`.
-4. Click **Deploy** and allow the Horadric container environment to initialize.
+```text
+├── app.py               # Main application logic & premium UI stylesheets
+├── requirements.txt     # Python production environment packages
+└── README.md            # System architecture overview & deployment guide
