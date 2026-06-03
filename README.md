@@ -1,17 +1,25 @@
-# Private Research Mainframe Terminal
+* **Gate of Sanctuary:** Secure frontend layer blocking public access via a password phrase.
+* **The Supreme Artifact:** Centralized focal point tracking for the absolute #1 selling product.
+* **Temporal Sales Ledger:** Deep-dive 7-day historical tracking with a clickable, interactive hourly breakdown matrix.
+* **Necromancer Ritual:** Active visual animation sequence that triggers every 3 hours to refresh data pools.
+* **The Outer Circle:** Dark tracking grid reserved for the top 10 rising product trends before they hit the main charts.
 
-An internal data visualization portal built exclusively for personal item research, stylized precisely with a green-phosphor Matrix mainframe terminal interface.
+---
 
-## System Capabilities & Architecture
+## 📜 Repository Structure
+* `app.py` - The core Streamlit application engine and user interface layout.
+* `requirements.txt` - Minimalist package list containing the required Streamlit core build.
+* `README.md` - Documentation ledger.
 
-* **Matrix Mainframe UI:** Stripped of public-facing components and overhauled with high-contrast black terminal nodes, neon green typography, and a custom HTML5 digital rain canvas element simulating active stream decryption.
-* **Single Image Signature:** Enforces a strict data profile that gathers exactly one high-resolution master product picture per item entry, eliminating unnecessary dynamic peripheral thumbnail grids.
-* **Isolated TikTok Shop Pipelines:** Data collection rules explicitly prioritize verified marketplace product nodes from the official TikTok Shop channel while fundamentally filtering out viral video ad placements.
-* **Interactive Node Selection Matrix:** Features an item inventory grid mapping ranks 1 through 15. Triggering a node's "Connect" interface dynamically updates the central metric canvas and time-series line graph without loss of viewport state.
-* **Unindexed Velocity Feed:** A text-only sidebar tracking rapid-growth trending items that have not yet cracked the top-tier sales pool.
+---
 
-## Deployment to Streamlit Cloud (Private Instance)
+## 🛠️ Deployment Instructions
 
-1. Push `app.py` and `requirements.txt` into a **private** GitHub repository.
-2. Visit [share.streamlit.io](https://share.streamlit.io) and sign in using your GitHub credentials.
-3. Click **"New App"**, select your private tracking repository, choose the primary branch, and click **Deploy**.
+To manifest this dashboard inside **Streamlit Community Cloud**:
+1. Commit `app.py` and `requirements.txt` to a private or public GitHub repository.
+2. Navigate to [Streamlit Share](https://share.streamlit.io/) and authenticate with your GitHub profile.
+3. Select **New App**, find your repository, and target `app.py` as your main file path.
+4. Click **Deploy** and wait for the Horadric container to initialize.
+
+## 🔑 Word of Power (Password Gate)
+The access restriction is natively hardcoded inside `app.py`. To modify the secret incantation required to open the vault, update the password evaluation string within the code structure (Default value set to: `Lilith666`).
