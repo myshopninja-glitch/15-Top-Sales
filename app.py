@@ -30,7 +30,7 @@ st.markdown('''
         background: rgba(13, 18, 28, 0.75);
         border: 1px solid rgba(255, 255, 255, 0.06);
         border-radius: 12px;
-        padding: 20px;
+        padding: 16px;
         box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
         backdrop-filter: blur(8px);
         -webkit-backdrop-filter: blur(8px);
@@ -43,36 +43,36 @@ st.markdown('''
         letter-spacing: 0.06em;
         color: #94a3b8;
         font-weight: 600;
-        margin-bottom: 15px;
+        margin-bottom: 12px;
         display: flex;
         align-items: center;
         gap: 6px;
     }
 
-    /* Item Tile Grid Matrix Styling */
+    /* Micro-Sized Item Tile Grid Matrix Styling (Half Size) */
     .tile-container {
         background: rgba(255, 255, 255, 0.015);
         border: 1px solid rgba(255, 255, 255, 0.04);
-        border-radius: 8px;
-        padding: 10px;
+        border-radius: 6px;
+        padding: 6px;
         text-align: center;
         transition: transform 0.2s ease, border-color 0.2s ease;
     }
     .tile-container:hover {
         transform: translateY(-2px);
         border-color: #00f2fe;
-        box-shadow: 0 0 12px rgba(0, 242, 254, 0.15);
+        box-shadow: 0 0 10px rgba(0, 242, 254, 0.15);
     }
     
-    /* Clean Product Title and Shop Placement underneath picture */
+    /* Highly Compact Product Placement underneath picture */
     .tile-product-title {
-        font-size: 0.8rem;
+        font-size: 0.7rem;
         font-weight: 600;
         color: #ffffff;
-        margin-top: 8px;
+        margin-top: 4px;
         margin-bottom: 2px;
-        line-height: 1.25;
-        height: 2.5em;
+        line-height: 1.2;
+        height: 2.4em;
         overflow: hidden;
         text-overflow: ellipsis;
         display: -webkit-box;
@@ -82,12 +82,12 @@ st.markdown('''
     
     /* Source Platform Badges */
     .platform-tag {
-        font-size: 0.7rem;
+        font-size: 0.6rem;
         font-weight: 700;
-        padding: 1px 6px;
-        border-radius: 4px;
+        padding: 0px 4px;
+        border-radius: 3px;
         display: inline-block;
-        margin-bottom: 8px;
+        margin-bottom: 4px;
         text-transform: uppercase;
         letter-spacing: 0.02em;
     }
@@ -96,12 +96,12 @@ st.markdown('''
     .tag-tiktok { background-color: rgba(0, 242, 254, 0.12); color: #00f2fe; border: 1px solid rgba(0, 242, 254, 0.25); }
     .tag-aliexpress { background-color: rgba(230, 0, 51, 0.12); color: #e60033; border: 1px solid rgba(230, 0, 51, 0.25); }
 
-    /* Compact Tile Image Matrix configuration */
+    /* Downscaled Tile Image Configuration */
     .tile-img {
         width: 100%;
-        height: 100px;
+        height: 60px;
         object-fit: cover;
-        border-radius: 6px;
+        border-radius: 4px;
         border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
@@ -114,27 +114,27 @@ st.markdown('''
         color: #00f2fe !important;
     }
 
-    /* 50% Reduced Micro Button Wrapper Override */
+    /* Micro Action Triggers */
     .reduced-btn-wrapper .stButton>button {
         background: rgba(255, 255, 255, 0.04) !important;
         color: #94a3b8 !important;
         border: 1px solid rgba(255, 255, 255, 0.08) !important;
-        border-radius: 4px !important;
-        padding: 2px 6px !important;
-        font-size: 0.7rem !important;
+        border-radius: 3px !important;
+        padding: 0px 4px !important;
+        font-size: 0.65rem !important;
         min-height: unset !important;
-        height: 22px !important;
-        width: 75% !important;
+        height: 18px !important;
+        width: 90% !important;
         margin: 0 auto !important;
         display: block !important;
-        line-height: 1.2 !important;
+        line-height: 1.1 !important;
         transition: all 0.2s ease;
     }
     .reduced-btn-wrapper .stButton>button:hover {
         background: #00f2fe !important;
         color: #07090e !important;
         border-color: #00f2fe !important;
-        box-shadow: 0 0 8px rgba(0, 242, 254, 0.3) !important;
+        box-shadow: 0 0 6px rgba(0, 242, 254, 0.3) !important;
     }
 </style>
 ''', unsafe_allow_html=True)
@@ -188,22 +188,22 @@ st.markdown('''
 <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; margin-bottom: 10px;">
     <div>
         <h2 style="margin: 0; font-size: 1.45rem; font-weight: 800; letter-spacing: -0.03em; background: linear-gradient(90deg, #ffffff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">DATA SCAVENGER ENGINE</h2>
-        <p style="margin: 0; font-size: 0.72rem; color: #4caf50; font-family: monospace; letter-spacing: 0.05em;">● TELEMETRY STATUS ONLINE // RECON SATELLITE UP-LINK SECURED</p>
+        <p style="margin: 0; font-size: 0.72rem; color: #4caf50; font-family: monospace; letter-spacing: 0.05em;">● TELEMETRY STATUS ONLINE // ORBITAL GEOLOCATION LOCKED</p>
     </div>
 </div>
 ''', unsafe_allow_html=True)
 
-# --- THREE COLUMN ASYMMETRICAL INTERFACE ---
-col_left, col_center, col_right = st.columns([1.3, 1.7, 1])
 
-# ==================== LEFT COLUMN: SATELLITE GLOBE & 14 TILES ====================
+# ==================== UPPER LAYOUT: ASYMMETRICAL METRIC BLOCK ====================
+col_left, col_center, col_right = st.columns([1.2, 1.8, 1])
+
 with col_left:
-    # 1. New Style Global Network Ingestor: Rotating Globe and Floating Hub Satellite
+    # Interactive Realistic Earth Satellite Telemetry Engine
     st.markdown('<div class="premium-card">', unsafe_allow_html=True)
-    st.markdown('<div class="card-title">📡 ORBITAL SATELLITE INGESTION LINK</div>', unsafe_allow_html=True)
+    st.markdown('<div class="card-title">📡 LIVE PLANETARY RECONNAISSANCE</div>', unsafe_allow_html=True)
     
     st.components.v1.html('''
-    <div style="position:relative; width:100%; height:140px; background:#0a0d14; border-radius:8px; border:1px solid rgba(255,255,255,0.04); overflow:hidden;">
+    <div style="position:relative; width:100%; height:230px; background:#04060a; border-radius:8px; border:1px solid rgba(255,255,255,0.04); overflow:hidden;">
         <canvas id="globeCanvas" style="position:absolute; top:0; left:0; width:100%; height:100%;"></canvas>
     </div>
     <script>
@@ -215,248 +215,156 @@ with col_left:
         }
         resize();
         
-        let rotationAngle = 0;
-        let dataPackets = [];
+        let orbitAngle = 0;
+        let earthRotation = 0;
+        let signalPulses = [];
+
+        // Simple generated vector terrain loops representing global landmass definitions
+        const continents = [
+            [[-20,25], [-10,35], [10,30], [15,10], [5,-10], [-5,-5], [-15,5]],
+            [[-60,-10], [-45,-5], [-35,-20], [-40,-40], [-60,-25]],
+            [[40,45], [60,50], [80,40], [70,20], [50,25]],
+            [[-100,50], [-80,45], [-70,30], [-95,20], [-115,35]]
+        ];
+
+        function project(lon, lat, r, cx, cy) {
+            let radLon = (lon + earthRotation) * Math.PI / 180;
+            let radLat = lat * Math.PI / 180;
+            return {
+                x: cx + r * Math.cos(radLat) * Math.sin(radLon),
+                y: cy - r * Math.sin(radLat),
+                visible: Math.cos(radLat) * Math.cos(radLon) > -0.2
+            };
+        }
 
         function renderGlobeScene() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            const hx = canvas.width / 2;
-            const gy = canvas.height / 2 + 18;  // Lower globe position
-            const globeRadius = 32;
-            const satY = canvas.height / 2 - 32; // Floating central hub satellite position
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+            const r = 55; // Earth radius
             
-            rotationAngle += 0.008; // Globe rotation speed
+            orbitAngle += 0.015;     // Speed of satellite orbit
+            earthRotation += 0.25;   // Speed of Earth rotation
 
-            // --- DRAW EXTRACTION CONE / BEAM ---
-            let beamGrd = ctx.createLinearGradient(hx, satY, hx, gy);
-            beamGrd.addColorStop(0, 'rgba(0, 242, 254, 0.4)');
-            beamGrd.addColorStop(0.3, 'rgba(127, 0, 255, 0.15)');
-            beamGrd.addColorStop(1, 'rgba(0, 0, 0, 0)');
-            
-            ctx.fillStyle = beamGrd;
+            // 1. Draw Background Space Atmosphere Glow
+            let glow = ctx.createRadialGradient(cx, cy, r - 5, cx, cy, r + 25);
+            glow.addColorStop(0, 'rgba(0, 110, 255, 0.05)');
+            glow.addColorStop(0.6, 'rgba(0, 242, 254, 0.02)');
+            glow.addColorStop(1, 'rgba(0,0,0,0)');
+            ctx.fillStyle = glow;
+            ctx.beginPath(); ctx.arc(cx, cy, r + 25, 0, Math.PI*2); ctx.fill();
+
+            // Calculate Satellite position (3D Elliptical Ring Projection)
+            let satX = cx + Math.sin(orbitAngle) * (r + 30);
+            let satY = cy + Math.cos(orbitAngle) * 20 + Math.sin(orbitAngle) * 5;
+            let satelliteIsBehind = Math.cos(orbitAngle) > 0;
+
+            // 2. Render Satellite ONLY if Behind Earth
+            if (satelliteIsBehind) {
+                drawSatellite(satX, satY);
+            }
+
+            // 3. Draw Real Earth Body (Deep Oceanic Gradient Base)
+            let oceanGrd = ctx.createRadialGradient(cx - r/3, cy - r/3, r/5, cx, cy, r);
+            oceanGrd.addColorStop(0, '#102a45');
+            oceanGrd.addColorStop(0.7, '#071626');
+            oceanGrd.addColorStop(1, '#02070d');
+            ctx.fillStyle = oceanGrd;
             ctx.beginPath();
-            ctx.moveTo(hx, satY + 6);
-            ctx.lineTo(hx - globeRadius, gy);
-            ctx.lineTo(hx + globeRadius, gy);
-            ctx.closePath();
+            ctx.arc(cx, cy, r, 0, Math.PI * 2);
             ctx.fill();
 
-            // --- DRAW ROTATING ROTATING GLOBE ---
-            // Shaded Base Sphere Background
-            let globeShade = ctx.createRadialGradient(hx - 8, gy - 8, 4, hx, gy, globeRadius);
-            globeShade.addColorStop(0, '#111827');
-            globeShade.addColorStop(1, '#05070a');
-            ctx.fillStyle = globeShade;
-            ctx.beginPath(); ctx.arc(hx, gy, globeRadius, 0, Math.PI * 2); ctx.fill();
-
-            // Outlining Border Outer Ring
-            ctx.strokeStyle = 'rgba(0, 242, 254, 0.25)';
-            ctx.lineWidth = 1;
-            ctx.beginPath(); ctx.arc(hx, gy, globeRadius, 0, Math.PI * 2); ctx.stroke();
-
-            // Render Shifting Latitude Rings (Horizontal Wireframes)
-            ctx.strokeStyle = 'rgba(0, 242, 254, 0.08)';
-            for (let lat = -1; lat <= 1; lat += 0.4) {
-                if (Math.abs(lat) === 1) continue;
-                let rLat = Math.sqrt(1 - lat * lat) * globeRadius;
+            // 4. Project and Draw Moving Real Earth Continental Landmass Geometries
+            ctx.fillStyle = 'rgba(34, 197, 94, 0.45)'; // Organic Deep Green Coastlines
+            continents.forEach(poly => {
                 ctx.beginPath();
-                ctx.ellipse(hx, gy + lat * globeRadius * 0.35, rLat, rLat * 0.18, 0, 0, Math.PI * 2);
-                ctx.stroke();
-            }
-
-            // Render Rotating Longitude Bars (Vertical Wireframes)
-            ctx.strokeStyle = 'rgba(0, 242, 254, 0.2)';
-            for (let i = 0; i < 5; i++) {
-                let lonAngle = rotationAngle + (i * Math.PI / 5);
-                let aspectWidth = Math.cos(lonAngle) * globeRadius;
-                // Only render wire arcs transitioning across the visual hemisphere face
-                ctx.beginPath();
-                ctx.ellipse(hx, gy, Math.abs(aspectWidth), globeRadius, 0, 0, Math.PI * 2);
-                ctx.stroke();
-            }
-
-            // --- EXTRACT PRODUCT INFORMATION PACKETS ---
-            if (Math.random() < 0.12) {
-                // Generate packet vectors from various coordinates inside the globe surface area
-                let randAng = Math.random() * Math.PI * 2;
-                let randDist = Math.random() * globeRadius;
-                dataPackets.push({
-                    x: hx + Math.cos(randAng) * randDist,
-                    y: gy + Math.sin(randAng) * randDist * 0.5,
-                    t: 0,
-                    speed: 0.015 + Math.random() * 0.02
+                let first = true;
+                let pathVisible = false;
+                poly.forEach(pt => {
+                    let proj = project(pt[0], pt[1], r, cx, cy);
+                    if (proj.visible) pathVisible = true;
+                    if (first) {
+                        ctx.moveTo(proj.x, proj.y);
+                        first = false;
+                    } else {
+                        ctx.lineTo(proj.x, proj.y);
+                    }
                 });
-            }
-
-            // Update & Animate Data Extraction Packets to the Satellite Dish
-            dataPackets.forEach((p, idx) => {
-                p.t += p.speed;
-                if (p.t >= 1) { dataPackets.splice(idx, 1); return; }
-                
-                // Track linear trajectory upwards into central hub satellite target position
-                let curX = p.x + (hx - p.x) * p.t;
-                let curY = p.y + (satY + 6 - p.y) * p.t;
-                
-                ctx.fillStyle = '#ffffff';
-                ctx.shadowColor = '#00f2fe';
-                ctx.shadowBlur = 4;
-                ctx.beginPath(); ctx.arc(curX, curY, 2, 0, Math.PI * 2); ctx.fill();
-                ctx.shadowBlur = 0;
+                ctx.closePath();
+                if (pathVisible) {
+                    ctx.save();
+                    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.clip(); // Mask within Sphere Edge
+                    ctx.fill();
+                    ctx.restore();
+                }
             });
 
-            // --- DRAW CENTRAL HUB FLOATING SATELLITE ---
-            // Main Chassis Hub block
-            ctx.fillStyle = "#7f00ff";
-            ctx.shadowColor = "#7f00ff";
-            ctx.shadowBlur = 8;
-            ctx.fillRect(hx - 5, satY - 4, 10, 8);
-            ctx.shadowBlur = 0;
-            
-            // Core Solar Panel Extender Wings
-            ctx.fillStyle = "#00f2fe";
-            ctx.fillRect(hx - 17, satY - 2, 9, 4); // Left panel
-            ctx.fillRect(hx + 8, satY - 2, 9, 4);  // Right panel
+            // 5. Draw Atmosphere Limbal Edge Ring
+            let atmosphere = ctx.createRadialGradient(cx, cy, r - 3, cx, cy, r + 2);
+            atmosphere.addColorStop(0, 'rgba(0, 0, 0, 0)');
+            atmosphere.addColorStop(0.8, 'rgba(0, 180, 255, 0.35)');
+            atmosphere.addColorStop(1, 'rgba(0, 242, 254, 0)');
+            ctx.fillStyle = atmosphere;
+            ctx.beginPath(); ctx.arc(cx, cy, r + 2, 0, Math.PI * 2); ctx.fill();
 
-            // Solar Array Grid separators
-            ctx.strokeStyle = "#0a0d14";
-            ctx.lineWidth = 1;
-            ctx.beginPath(); ctx.moveTo(hx - 12, satY - 2); ctx.lineTo(hx - 12, satY + 2); ctx.stroke();
-            ctx.beginPath(); ctx.moveTo(hx + 12, satY - 2); ctx.lineTo(hx + 12, satY + 2); ctx.stroke();
+            // 6. Spawn and Draw Active Uplink Ping Lasers 
+            if (!satelliteIsBehind && Math.random() < 0.15) {
+                signalPulses.push({ x: satX, y: satY, tx: cx + (Math.random() - 0.5) * r, ty: cy + (Math.random() - 0.5) * r, life: 1.0 });
+            }
 
-            // Downward pointing Receiver Uplink Dish
-            ctx.strokeStyle = "#ffffff";
-            ctx.beginPath(); ctx.moveTo(hx, satY + 4); ctx.lineTo(hx, satY + 8); ctx.stroke();
-            ctx.beginPath(); ctx.arc(hx, satY + 8, 3, Math.PI, 0); ctx.stroke(); 
+            signalPulses.forEach((pulse, idx) => {
+                pulse.life -= 0.04;
+                if (pulse.life <= 0) { signalPulses.splice(idx, 1); return; }
+                ctx.strokeStyle = `rgba(0, 242, 254, ${pulse.life})`;
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.moveTo(pulse.x, pulse.y);
+                ctx.lineTo(pulse.tx, pulse.ty);
+                ctx.stroke();
+            });
 
-            // Text Label Overlay
-            ctx.font = "bold 8px monospace";
-            ctx.fillStyle = "#64748b";
-            ctx.fillText("HUB SAT-01", hx + 22, satY + 3);
-            
+            // 7. Render Satellite ONLY if Front of Earth
+            if (!satelliteIsBehind) {
+                drawSatellite(satX, satY);
+            }
+
             requestAnimationFrame(renderGlobeScene);
         }
+
+        function drawSatellite(x, y) {
+            // Solar Panels
+            ctx.fillStyle = "#00f2fe";
+            ctx.fillRect(x - 14, y - 2, 8, 3);
+            ctx.fillRect(x + 6, y - 2, 8, 3);
+            // Chassis Main Module
+            ctx.fillStyle = "#7f00ff";
+            ctx.fillRect(x - 3, y - 4, 6, 7);
+            // Core Diode Node Glow
+            ctx.fillStyle = "#ffffff";
+            ctx.beginPath(); ctx.arc(x, y-0.5, 1.5, 0, Math.PI*2); ctx.fill();
+        }
+
         renderGlobeScene();
     </script>
-    ''', height=142)
-    st.markdown('</div>', unsafe_allow_html=True)
-    
-    # 2. 14 Item Tile Grid (Names and shops cleanly stacked directly under graphics)
-    st.markdown('<div class="premium-card">', unsafe_allow_html=True)
-    st.markdown('<div class="card-title">📦 RETAIL MATRIX MARKET</div>', unsafe_allow_html=True)
-    
-    tile_grid = st.columns(2)
-    for idx in range(1, 15):
-        item_node = retrieved_items[idx]
-        grid_col = tile_grid[idx % 2]
-        
-        with grid_col:
-            tag_class = f"tag-{item_node['source'].lower().replace('.','').replace(' shop','')}"
-            st.markdown(f'''
-            <div class="tile-container">
-                <a href="{item_node['url']}" target="_blank">
-                    <img src="{item_node['img']}" class="tile-img" />
-                </a>
-                <div class="tile-product-title">
-                    <a href="{item_node['url']}" target="_blank" class="clean-anchor">{item_node['name']}</a>
-                </div>
-                <div class="platform-tag {tag_class}">{item_node['source']}</div>
-            ''', unsafe_allow_html=True)
-            
-            # Wrap action triggers into 50% downscaled micro button configuration
-            st.markdown('<div class="reduced-btn-wrapper">', unsafe_allow_html=True)
-            if st.button("Analyze", key=f"select_btn_{idx}"):
-                st.session_state.selected_idx = idx
-                st.rerun()
-            st.markdown('</div></div><div style="margin-bottom:12px;"></div>', unsafe_allow_html=True)
+    ''', height=232)
     st.markdown('</div>', unsafe_allow_html=True)
 
-# ==================== CENTER COLUMN: PROMINENT HIGHLIGHT & INTERACTIVE GRAPH ====================
 with col_center:
-    # Top Prominent Display Spot (#1 Item by default, changes cleanly when other tile buttons are clicked)
-    st.markdown('<div class="premium-card">', unsafe_allow_html=True)
-    st.markdown('<div class="card-title">✨ HIGHLIGHTED PRODUCT SPECIFICATION</div>', unsafe_allow_html=True)
+    # Highlighted Display Card Focus Spot 
+    st.markdown('<div class="premium-card" style="height: 264px;">', unsafe_allow_html=True)
     
-    show_col1, show_col2 = st.columns([1.1, 1])
+    show_col1, show_col2 = st.columns([1, 1.1])
     with show_col1:
         st.markdown(f'''
         <a href="{selected_item['url']}" target="_blank">
-            <img src="{selected_item['img']}" style="width:100%; height:210px; object-fit:cover; border-radius:10px; border:1px solid rgba(255,255,255,0.1);" />
+            <img src="{selected_item['img']}" style="width:100%; height:230px; object-fit:cover; border-radius:8px; border:1px solid rgba(255,255,255,0.1);" />
         </a>
         ''', unsafe_allow_html=True)
     with show_col2:
         tag_class = f"tag-{selected_item['source'].lower().replace('.','').replace(' shop','')}"
         st.markdown(f'''
-        <h3 style="margin-top:0; margin-bottom:6px; font-size:1.15rem; line-height:1.25;">
+        <div class="card-title" style="margin-bottom:6px;">✨ SELECTION ANALYSIS</div>
+        <h3 style="margin-top:0; margin-bottom:4px; font-size:1.05rem; line-height:1.2; height: 2.4em; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
             <a href="{selected_item['url']}" target="_blank" class="clean-anchor">{selected_item['name']}</a>
         </h3>
-        <div class="platform-tag {tag_class}" style="margin-bottom:10px;">{selected_item['source']}</div>
-        <p style="margin:0; font-size:0.8rem; color:#64748b;">Estimated Retail Value</p>
-        <h2 style="margin:0; color:#00f2fe; font-size:1.7rem; font-weight:800;">{selected_item['price']}</h2>
-        <div style="margin-top:14px;">
-            <a href="{selected_item['url']}" target="_blank" style="text-decoration:none;">
-                <button style="width:100%; background:#7f00ff; color:white; border:none; padding:8px 12px; border-radius:6px; font-weight:600; cursor:pointer;">🔗 Direct One-Click Storefront</button>
-            </a>
-        </div>
-        ''', unsafe_allow_html=True)
-
-    st.markdown('<hr style="border:1px solid rgba(255,255,255,0.05); margin:20px 0;">', unsafe_allow_html=True)
-    st.markdown('<div class="card-title">📊 METRIC ANALYSIS METADATA (7-DAY DRILLDOWN)</div>', unsafe_allow_html=True)
-    
-    # Target pill row to execute instant interactive graph variable transitions
-    choice_day = st.radio("Select Calendar Variable below to update the Hourly Line Profile curve directly:", ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], index=['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].index(st.session_state.selected_day), horizontal=True)
-    if choice_day != st.session_state.selected_day:
-        st.session_state.selected_day = choice_day
-        st.rerun()
-
-    view_tab1, view_tab2 = st.tabs(["7-Day Cumulative Volume Run", f"Hourly Velocity Spread ({st.session_state.selected_day})"])
-    
-    with view_tab1:
-        fig_7d = px.bar(selected_item['sales_days'], x='Day', y='Units Sold', color='Units Sold', color_continuous_scale='Purples')
-        fig_7d.update_layout(
-            plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#94a3b8',
-            margin=dict(l=10, r=10, t=10, b=10), coloraxis_showscale=False, height=230
-        )
-        st.plotly_chart(fig_7d, use_container_width=True)
-        
-    with view_tab2:
-        fig_24h = px.line(selected_item['sales_hours'][st.session_state.selected_day], x='Hour', y='Units Sold', markers=True)
-        fig_24h.update_traces(line_color='#00f2fe', marker=dict(size=5, color='#ffffff'))
-        fig_24h.update_layout(
-            plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#94a3b8',
-            margin=dict(l=10, r=10, t=10, b=10), height=230
-        )
-        st.plotly_chart(fig_24h, use_container_width=True)
-    st.markdown('</div>', unsafe_allow_html=True)
-
-# ==================== RIGHT COLUMN: TEXT-ONLY MICRO-TREND SHEET ====================
-with col_right:
-    st.markdown('<div class="premium-card" style="height: 100%;">', unsafe_allow_html=True)
-    st.markdown('<div class="card-title">⚡ NEXT 10 MICRO-TRENDING VELOCITIES</div>', unsafe_allow_html=True)
-    
-    micro_trends = [
-        ("Collapsible Silicone Travel Kettle", "Amazon", "https://www.amazon.com/s?k=Collapsible+Silicone+Travel+Kettle"),
-        ("Automatic Smart Self-Stirring Mug", "TikTok Shop", "https://www.tiktok.com/market"),
-        ("Custom Celestial Birth Chart Print", "Amazon", "https://www.amazon.com/s?k=Custom+Celestial+Birth+Chart+Print"),
-        ("Mini Pocket Label Thermal Printer", "Amazon", "https://www.amazon.com/s?k=Mini+Pocket+Label+Thermal+Printer"),
-        ("Electric Jar Vacuum Sealer Machine", "TikTok Shop", "https://www.tiktok.com/market"),
-        ("Premium Titanium EDC Multi-Tool", "AliExpress", "https://www.aliexpress.com"),
-        ("Vintage Ceramic Mushroom Desk Lamp", "Etsy", "https://www.etsy.com/search?q=mushroom+lamp"),
-        ("Aesthetic Abstract Ceramic Vases", "Etsy", "https://www.etsy.com/search?q=ceramic+vase"),
-        ("Ergonomic Memory Foam Wrist Rest", "Amazon", "https://www.amazon.com/s?k=Wrist+Rest"),
-        ("Flame Effect Ultrasonic Air Diffuser", "TikTok Shop", "https://www.tiktok.com/market")
-    ]
-    
-    for i, (t_name, t_src, t_url) in enumerate(micro_trends, 1):
-        st.markdown(f'''
-        <div style="margin-bottom: 12px; font-size: 0.85rem; line-height: 1.4;">
-            <div style="font-weight: 700; color: #ffffff;">
-                {i}. <a href="{t_url}" target="_blank" class="clean-anchor">{t_name}</a>
-            </div>
-            <span style="font-size: 0.7rem; font-weight: bold; color: #64748b; text-transform: uppercase;">[{t_src}]</span>
-        </div>
-        ''', unsafe_allow_html=True)
-        if i < 10:
-            st.markdown('<hr style="margin: 6px 0; border: none; border-top: 1px solid rgba(255,255,255,0.03);">', unsafe_allow_html=True)
-            
-    st.markdown('</div>', unsafe_allow_html=True)
