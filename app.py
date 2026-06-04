@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.express as px
 import random
 
-# Page config for modern dashboard layout
+# Page config for modern high-density dark dashboard layout
 st.set_page_config(page_title="Global Retail Scavenger", layout="wide", initial_sidebar_state="collapsed")
 
 # Premium Minimal Dark UI Stylesheets
@@ -25,7 +25,7 @@ st.markdown('''
         letter-spacing: -0.02em;
     }
 
-    /* Premium Translucent Cards */
+    /* Premium Translucent Glassmorphism Cards */
     .premium-card {
         background: rgba(13, 18, 28, 0.75);
         border: 1px solid rgba(255, 255, 255, 0.06);
@@ -188,7 +188,7 @@ st.markdown('''
 <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; margin-bottom: 10px;">
     <div>
         <h2 style="margin: 0; font-size: 1.45rem; font-weight: 800; letter-spacing: -0.03em; background: linear-gradient(90deg, #ffffff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">DATA SCAVENGER ENGINE</h2>
-        <p style="margin: 0; font-size: 0.72rem; color: #4caf50; font-family: monospace; letter-spacing: 0.05em;">● TELEMETRY STATUS ONLINE // ALL GLOBAL ENDPOINTS CONVERGED</p>
+        <p style="margin: 0; font-size: 0.72rem; color: #4caf50; font-family: monospace; letter-spacing: 0.05em;">● TELEMETRY STATUS ONLINE // RECON SATELLITE UP-LINK SECURED</p>
     </div>
 </div>
 ''', unsafe_allow_html=True)
@@ -196,18 +196,18 @@ st.markdown('''
 # --- THREE COLUMN ASYMMETRICAL INTERFACE ---
 col_left, col_center, col_right = st.columns([1.3, 1.7, 1])
 
-# ==================== LEFT COLUMN: RADAR INGESTION & 14 TILES ====================
+# ==================== LEFT COLUMN: SATELLITE GLOBE & 14 TILES ====================
 with col_left:
-    # 1. New Style Network Ingestor: Centralized Orbital Constellation
+    # 1. New Style Global Network Ingestor: Rotating Globe and Floating Hub Satellite
     st.markdown('<div class="premium-card">', unsafe_allow_html=True)
-    st.markdown('<div class="card-title">📡 RADAR INGESTION LOOP</div>', unsafe_allow_html=True)
+    st.markdown('<div class="card-title">📡 ORBITAL SATELLITE INGESTION LINK</div>', unsafe_allow_html=True)
     
     st.components.v1.html('''
     <div style="position:relative; width:100%; height:140px; background:#0a0d14; border-radius:8px; border:1px solid rgba(255,255,255,0.04); overflow:hidden;">
-        <canvas id="radarCanvas" style="position:absolute; top:0; left:0; width:100%; height:100%;"></canvas>
+        <canvas id="globeCanvas" style="position:absolute; top:0; left:0; width:100%; height:100%;"></canvas>
     </div>
     <script>
-        const canvas = document.getElementById('radarCanvas');
+        const canvas = document.getElementById('globeCanvas');
         const ctx = canvas.getContext('2d');
         function resize() {
             canvas.width = canvas.parentElement.clientWidth;
@@ -215,85 +215,128 @@ with col_left:
         }
         resize();
         
-        let angle = 0;
-        let pulses = [];
+        let rotationAngle = 0;
+        let dataPackets = [];
 
-        function renderRadar() {
+        function renderGlobeScene() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
             const hx = canvas.width / 2;
-            const hy = canvas.height / 2;
-            const orbitRadius = 42;
-
-            // Draw radar concentric telemetry tracks
-            ctx.strokeStyle = 'rgba(0, 242, 254, 0.05)';
-            ctx.lineWidth = 1;
-            ctx.beginPath(); ctx.arc(hx, hy, orbitRadius, 0, Math.PI * 2); ctx.stroke();
-            ctx.beginPath(); ctx.arc(hx, hy, orbitRadius + 22, 0, Math.PI * 2); ctx.stroke();
+            const gy = canvas.height / 2 + 18;  // Lower globe position
+            const globeRadius = 32;
+            const satY = canvas.height / 2 - 32; // Floating central hub satellite position
             
-            // Constellation outer platform coordinates
-            const nodes = [
-                {name: "Amazon", color: "#ff9900", baseAngle: 0},
-                {name: "Etsy", color: "#f1641e", baseAngle: Math.PI / 2},
-                {name: "TikTok", color: "#00f2fe", baseAngle: Math.PI},
-                {name: "AliExpress", color: "#e60033", baseAngle: Math.PI * 1.5}
-            ];
+            rotationAngle += 0.008; // Globe rotation speed
 
-            angle += 0.006; // Rotate the orbit array constellation over time
+            // --- DRAW EXTRACTION CONE / BEAM ---
+            let beamGrd = ctx.createLinearGradient(hx, satY, hx, gy);
+            beamGrd.addColorStop(0, 'rgba(0, 242, 254, 0.4)');
+            beamGrd.addColorStop(0.3, 'rgba(127, 0, 255, 0.15)');
+            beamGrd.addColorStop(1, 'rgba(0, 0, 0, 0)');
+            
+            ctx.fillStyle = beamGrd;
+            ctx.beginPath();
+            ctx.moveTo(hx, satY + 6);
+            ctx.lineTo(hx - globeRadius, gy);
+            ctx.lineTo(hx + globeRadius, gy);
+            ctx.closePath();
+            ctx.fill();
 
-            nodes.forEach(n => {
-                const currentAngle = n.baseAngle + angle;
-                const nx = hx + Math.cos(currentAngle) * orbitRadius;
-                const ny = hy + Math.sin(currentAngle) * orbitRadius;
+            // --- DRAW ROTATING ROTATING GLOBE ---
+            // Shaded Base Sphere Background
+            let globeShade = ctx.createRadialGradient(hx - 8, gy - 8, 4, hx, gy, globeRadius);
+            globeShade.addColorStop(0, '#111827');
+            globeShade.addColorStop(1, '#05070a');
+            ctx.fillStyle = globeShade;
+            ctx.beginPath(); ctx.arc(hx, gy, globeRadius, 0, Math.PI * 2); ctx.fill();
 
-                // Telemetry radial connection lines
-                ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
-                ctx.beginPath(); ctx.moveTo(nx, ny); ctx.lineTo(hx, hy); ctx.stroke();
+            // Outlining Border Outer Ring
+            ctx.strokeStyle = 'rgba(0, 242, 254, 0.25)';
+            ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.arc(hx, gy, globeRadius, 0, Math.PI * 2); ctx.stroke();
 
-                // Draw endpoint node
-                ctx.fillStyle = n.color;
-                ctx.beginPath(); ctx.arc(nx, ny, 4, 0, Math.PI * 2); ctx.fill();
+            // Render Shifting Latitude Rings (Horizontal Wireframes)
+            ctx.strokeStyle = 'rgba(0, 242, 254, 0.08)';
+            for (let lat = -1; lat <= 1; lat += 0.4) {
+                if (Math.abs(lat) === 1) continue;
+                let rLat = Math.sqrt(1 - lat * lat) * globeRadius;
+                ctx.beginPath();
+                ctx.ellipse(hx, gy + lat * globeRadius * 0.35, rLat, rLat * 0.18, 0, 0, Math.PI * 2);
+                ctx.stroke();
+            }
 
-                // Dynamic variable string labels
-                ctx.font = "9px system-ui, sans-serif";
-                ctx.fillStyle = "#64748b";
-                ctx.fillText(n.name, nx + 7, ny + 3);
+            // Render Rotating Longitude Bars (Vertical Wireframes)
+            ctx.strokeStyle = 'rgba(0, 242, 254, 0.2)';
+            for (let i = 0; i < 5; i++) {
+                let lonAngle = rotationAngle + (i * Math.PI / 5);
+                let aspectWidth = Math.cos(lonAngle) * globeRadius;
+                // Only render wire arcs transitioning across the visual hemisphere face
+                ctx.beginPath();
+                ctx.ellipse(hx, gy, Math.abs(aspectWidth), globeRadius, 0, 0, Math.PI * 2);
+                ctx.stroke();
+            }
 
-                // Probability spark loop to feed items inside the hub
-                if (Math.random() < 0.012) {
-                    pulses.push({sx: nx, sy: ny, t: 0});
-                }
-            });
+            // --- EXTRACT PRODUCT INFORMATION PACKETS ---
+            if (Math.random() < 0.12) {
+                // Generate packet vectors from various coordinates inside the globe surface area
+                let randAng = Math.random() * Math.PI * 2;
+                let randDist = Math.random() * globeRadius;
+                dataPackets.push({
+                    x: hx + Math.cos(randAng) * randDist,
+                    y: gy + Math.sin(randAng) * randDist * 0.5,
+                    t: 0,
+                    speed: 0.015 + Math.random() * 0.02
+                });
+            }
 
-            // Process data ingestion packet streams converging to the center
-            pulses.forEach((p, index) => {
-                p.t += 0.03;
-                if (p.t >= 1) { pulses.splice(index, 1); return; }
+            // Update & Animate Data Extraction Packets to the Satellite Dish
+            dataPackets.forEach((p, idx) => {
+                p.t += p.speed;
+                if (p.t >= 1) { dataPackets.splice(idx, 1); return; }
                 
-                let px = p.sx + (hx - p.sx) * p.t;
-                let py = p.sy + (hy - p.sy) * p.t;
+                // Track linear trajectory upwards into central hub satellite target position
+                let curX = p.x + (hx - p.x) * p.t;
+                let curY = p.y + (satY + 6 - p.y) * p.t;
                 
                 ctx.fillStyle = '#ffffff';
                 ctx.shadowColor = '#00f2fe';
                 ctx.shadowBlur = 4;
-                ctx.beginPath(); ctx.arc(px, py, 2.5, 0, Math.PI * 2); ctx.fill();
+                ctx.beginPath(); ctx.arc(curX, curY, 2, 0, Math.PI * 2); ctx.fill();
                 ctx.shadowBlur = 0;
             });
 
-            // Prominent Master Central Hub Node Placement
+            // --- DRAW CENTRAL HUB FLOATING SATELLITE ---
+            // Main Chassis Hub block
             ctx.fillStyle = "#7f00ff";
             ctx.shadowColor = "#7f00ff";
-            ctx.shadowBlur = 12;
-            ctx.beginPath(); ctx.arc(hx, hy, 6, 0, Math.PI * 2); ctx.fill();
+            ctx.shadowBlur = 8;
+            ctx.fillRect(hx - 5, satY - 4, 10, 8);
             ctx.shadowBlur = 0;
-
-            ctx.font = "bold 9px monospace";
-            ctx.fillStyle = "#ffffff";
-            ctx.fillText("HUB", hx - 9, hy - 11);
             
-            requestAnimationFrame(renderRadar);
+            // Core Solar Panel Extender Wings
+            ctx.fillStyle = "#00f2fe";
+            ctx.fillRect(hx - 17, satY - 2, 9, 4); // Left panel
+            ctx.fillRect(hx + 8, satY - 2, 9, 4);  // Right panel
+
+            // Solar Array Grid separators
+            ctx.strokeStyle = "#0a0d14";
+            ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(hx - 12, satY - 2); ctx.lineTo(hx - 12, satY + 2); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(hx + 12, satY - 2); ctx.lineTo(hx + 12, satY + 2); ctx.stroke();
+
+            // Downward pointing Receiver Uplink Dish
+            ctx.strokeStyle = "#ffffff";
+            ctx.beginPath(); ctx.moveTo(hx, satY + 4); ctx.lineTo(hx, satY + 8); ctx.stroke();
+            ctx.beginPath(); ctx.arc(hx, satY + 8, 3, Math.PI, 0); ctx.stroke(); 
+
+            // Text Label Overlay
+            ctx.font = "bold 8px monospace";
+            ctx.fillStyle = "#64748b";
+            ctx.fillText("HUB SAT-01", hx + 22, satY + 3);
+            
+            requestAnimationFrame(renderGlobeScene);
         }
-        renderRadar();
+        renderGlobeScene();
     </script>
     ''', height=142)
     st.markdown('</div>', unsafe_allow_html=True)
@@ -320,7 +363,7 @@ with col_left:
                 <div class="platform-tag {tag_class}">{item_node['source']}</div>
             ''', unsafe_allow_html=True)
             
-            # Wrap the action layout inside the 50% downscaled custom CSS wrapper class
+            # Wrap action triggers into 50% downscaled micro button configuration
             st.markdown('<div class="reduced-btn-wrapper">', unsafe_allow_html=True)
             if st.button("Analyze", key=f"select_btn_{idx}"):
                 st.session_state.selected_idx = idx
