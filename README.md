@@ -8,12 +8,13 @@ Built natively using Python, Streamlit, HTML5 Canvas, and Plotly.
 
 ## 🚀 Key System Features
 
-- **Prominent Rank #1 Spotlight:** The single top-performing product is showcased at the focal center of the architecture with enlarged visual media, active price indexing, and full title data.
-- **14-Node Retail Matrix:** Market positions 2 through 15 are rendered in a clean, space-efficient tile grid on the left. Each tile displays a high-quality product image and a platform-specific badge.
+- **Highlighted Product Specification:** The currently analyzed product is showcased at the focal center of the architecture with enlarged visual media, active price indexing, and direct marketplace connectivity.
+- **Retail Matrix Grid:** Market items are rendered in an elegant, rank-free tile grid layout on the left. Each tile displays a high-quality product image with its specific title and marketplace source layered cleanly directly underneath.
+- **Micro Action Triggers:** Core "Analyze" button instances feature a 50% downscaled micro-padding layout to maximize screenspace efficiency.
 - **Single-Click Instant Directives:** Every product title and image across the entire dashboard acts as a direct anchor link, taking you straight to the active marketplace listing with a single click.
-- **Live Ingestion Network Flow:** The top-left panel contains a custom HTML5 canvas animation running on an active particle loop, simulating data packets being scavenged from global endpoints in real time.
-- **Deep-Dive Analytics Graphing:** Features an interactive chart engine. By interacting with the dashboard, you can toggle seamlessly between a 7-day cumulative sales layout and a precise 24-hour line graph tracking micro-velocities throughout any selected day.
-- **Off-Ranking Micro-Trends:** The right column actively loops the next 10 items tracking high volume spikes before they break into the absolute Top 15 threshold.
+- **Orbital Radar Ingestion Loop:** The top-left telemetry panel runs a custom HTML5 canvas engine simulating data processing packages. It features a rotating orbital constellation converging onto a centralized master processing **HUB**.
+- **Deep-Dive Analytics Graphing:** Features an interactive chart engine. Toggle seamlessly between a 7-day cumulative sales layout and a precise 24-hour line graph tracking micro-velocities by interacting with the chart day selectors.
+- **Off-Ranking Micro-Trends:** The right column actively loops the next 10 items tracking high volume spikes before they break into the primary storefront matrix.
 
 ---
 
