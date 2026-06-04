@@ -347,5 +347,3 @@ for i in range(1, len(retrieved_items), cols_per_row):
             </div>
             <div style="margin-bottom: 15px;"></div>
             ''', unsafe_allow_html=True)
-
-```
