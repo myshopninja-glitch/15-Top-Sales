@@ -368,3 +368,108 @@ with col_center:
         <h3 style="margin-top:0; margin-bottom:4px; font-size:1.05rem; line-height:1.2; height: 2.4em; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
             <a href="{selected_item['url']}" target="_blank" class="clean-anchor">{selected_item['name']}</a>
         </h3>
+        <div class="platform-tag {tag_class}" style="margin-bottom:6px;">{selected_item['source']}</div>
+        <p style="margin:0; font-size:0.75rem; color:#64748b;">Est. Marketplace Value</p>
+        <h2 style="margin:0; color:#00f2fe; font-size:1.4rem; font-weight:800; line-height:1.1;">{selected_item['price']}</h2>
+        <div style="margin-top:12px;">
+            <a href="{selected_item['url']}" target="_blank" style="text-decoration:none;">
+                <button style="width:100%; background:#7f00ff; color:white; border:none; padding:6px 10px; border-radius:4px; font-size:0.75rem; font-weight:600; cursor:pointer;">🔗 Direct Store Access</button>
+            </a>
+        </div>
+        ''', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+with col_right:
+    # 7-Day / 24hr Quick Analytics Curve Engine
+    st.markdown('<div class="premium-card" style="height: 264px; padding: 12px;">', unsafe_allow_html=True)
+    
+    choice_day = st.radio("Drilldown Chrono Vector:", ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], index=['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].index(st.session_state.selected_day), horizontal=True)
+    if choice_day != st.session_state.selected_day:
+        st.session_state.selected_day = choice_day
+        st.rerun()
+
+    view_tab1, view_tab2 = st.tabs(["7-Day Cumulative", f"Hourly Velocity ({st.session_state.selected_day})"])
+    
+    with view_tab1:
+        fig_7d = px.bar(selected_item['sales_days'], x='Day', y='Units Sold', color='Units Sold', color_continuous_scale='Purples')
+        fig_7d.update_layout(
+            plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#94a3b8',
+            margin=dict(l=5, r=5, t=5, b=5), coloraxis_showscale=False, height=140,
+            xaxis_title=None, yaxis_title=None
+        )
+        st.plotly_chart(fig_7d, use_container_width=True, config={'displayModeBar': False})
+        
+    with view_tab2:
+        fig_24h = px.line(selected_item['sales_hours'][st.session_state.selected_day], x='Hour', y='Units Sold')
+        fig_24h.update_traces(line_color='#00f2fe')
+        fig_24h.update_layout(
+            plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#94a3b8',
+            margin=dict(l=5, r=5, t=5, b=5), height=140, xaxis_title=None, yaxis_title=None
+        )
+        st.plotly_chart(fig_24h, use_container_width=True, config={'displayModeBar': False})
+    st.markdown('</div>', unsafe_allow_html=True)
+
+
+# ==================== LOWER LAYOUT: FULL-WIDTH HORIZONTAL BREAKOUT MATRIX ====================
+st.markdown('<div class="premium-card">', unsafe_allow_html=True)
+st.markdown('<div class="card-title">📦 MASS DATA RETRIEVAL MATRIX (14 CORES ACTIVE)</div>', unsafe_allow_html=True)
+
+# Using 7 columns to cleanly break up 14 half-sized micro tiles over exactly 2 clean rows
+lower_grid = st.columns(7)
+
+for idx in range(1, 15):
+    item_node = retrieved_items[idx]
+    # Distribute elements evenly across the columns (0-6)
+    target_col = lower_grid[(idx - 1) % 7]
+    
+    with target_col:
+        tag_class = f"tag-{item_node['source'].lower().replace('.','').replace(' shop','')}"
+        st.markdown(f'''
+        <div class="tile-container">
+            <a href="{item_node['url']}" target="_blank">
+                <img src="{item_node['img']}" class="tile-img" />
+            </a>
+            <div class="tile-product-title">
+                <a href="{item_node['url']}" target="_blank" class="clean-anchor">{item_node['name']}</a>
+            </div>
+            <div class="platform-tag {tag_class}">{item_node['source']}</div>
+        ''', unsafe_allow_html=True)
+        
+        # Action Triggers
+        st.markdown('<div class="reduced-btn-wrapper">', unsafe_allow_html=True)
+        if st.button("Inspect", key=f"select_btn_{idx}"):
+            st.session_state.selected_idx = idx
+            st.rerun()
+        st.markdown('</div></div><div style="margin-bottom:10px;"></div>', unsafe_allow_html=True)
+
+st.markdown('</div>', unsafe_allow_html=True)
+
+
+# ==================== BOTTOM SYSTEM RUN BREAKOUT: MICRO-TREND SHEET ====================
+st.markdown('<div class="premium-card">', unsafe_allow_html=True)
+st.markdown('<div class="card-title">⚡ CURRENT PIPELINE INGESTION VELOCITIES (MICRO-TRENDS)</div>', unsafe_allow_html=True)
+
+micro_trends = [
+    ("Collapsible Silicone Kettle", "Amazon"),
+    ("Smart Self-Stirring Mug", "TikTok Shop"),
+    ("Celestial Birth Chart Print", "Amazon"),
+    ("Mini Pocket Thermal Printer", "Amazon"),
+    ("Jar Vacuum Sealer Machine", "TikTok Shop"),
+    ("Titanium EDC Multi-Tool", "AliExpress"),
+    ("Ceramic Mushroom Desk Lamp", "Etsy"),
+    ("Abstract Ceramic Vases", "Etsy"),
+    ("Memory Foam Wrist Rest", "Amazon"),
+    ("Flame Ultrasonic Diffuser", "TikTok Shop")
+]
+
+trend_cols = st.columns(5)
+for idx, (t_name, t_src) in enumerate(micro_trends):
+    col_bucket = trend_cols[idx % 5]
+    with col_bucket:
+        st.markdown(f'''
+        <div style="font-size: 0.72rem; line-height: 1.3; background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.03); padding: 6px; border-radius:4px;">
+            <span style="font-weight: 700; color: #ffffff;">{idx+1}. {t_name}</span>
+            <br/><span style="font-size: 0.6rem; font-weight: bold; color: #64748b; text-transform: uppercase;">[{t_src}]</span>
+        </div>
+        ''', unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
