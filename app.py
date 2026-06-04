@@ -149,7 +149,7 @@ st.markdown('''
 ''', unsafe_allow_html=True)
 
 # Generate Live Intel Dataset spanning core matrix items and extended macro trending items
-@st.cache_data
+@st.cache_data(ttl=10800)
 def load_scavenger_intelligence():
     items = [
         # Positions 1 - 15 (Core Grid Matrix)
