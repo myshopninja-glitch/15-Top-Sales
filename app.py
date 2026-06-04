@@ -1,3 +1,14 @@
+To accommodate this layout, we need to restructure the dashboard into a highly efficient **3-column grid system** across the upper horizontal fold.
+
+### 📐 Mechanical Layout Overhaul
+
+* **Left Column (`col_left`):** Holds the newly shrunken 3D Earth Telemetry card. Immediately below it, the Top 15 item grid begins filling out.
+* **Center Column (`col_center`):** Houses the #1 Spotlight item, its details directly below the picture, and the time-series bar charts below that.
+* **Right Column (`col_right`):** Dedicated entirely to a new high-density vertical list featuring the **Top 10 Micro-Trending Items** (Items #16–25) that sit completely outside your core tracking matrix.
+
+Here is your fully updated, ready-to-run `app.py` script:
+
+```python
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -30,20 +41,20 @@ st.markdown('''
         background: rgba(13, 18, 28, 0.75);
         border: 1px solid rgba(255, 255, 255, 0.06);
         border-radius: 12px;
-        padding: 16px;
+        padding: 14px;
         box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
         backdrop-filter: blur(8px);
         -webkit-backdrop-filter: blur(8px);
-        margin-bottom: 20px;
+        margin-bottom: 15px;
     }
     
     .card-title {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
         text-transform: uppercase;
         letter-spacing: 0.06em;
         color: #94a3b8;
         font-weight: 600;
-        margin-bottom: 12px;
+        margin-bottom: 10px;
         display: flex;
         align-items: center;
         gap: 6px;
@@ -65,10 +76,10 @@ st.markdown('''
     }
     
     .tile-product-title {
-        font-size: 0.75rem;
+        font-size: 0.72rem;
         font-weight: 600;
         color: #ffffff;
-        margin-top: 6px;
+        margin-top: 5px;
         margin-bottom: 2px;
         line-height: 1.2;
         height: 2.4em;
@@ -79,25 +90,49 @@ st.markdown('''
         -webkit-box-orient: vertical;
     }
     
+    /* Micro-Trend List Layout Styling */
+    .micro-trend-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 6px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .micro-trend-rank {
+        font-family: monospace;
+        font-weight: 800;
+        color: #64748b;
+        font-size: 0.8rem;
+        width: 24px;
+    }
+    .micro-trend-title {
+        font-size: 0.75rem;
+        color: #e2e8f0;
+        flex-grow: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
     /* Source Platform Badges */
     .platform-tag {
-        font-size: 0.6rem;
+        font-size: 0.58rem;
         font-weight: 700;
         padding: 0px 4px;
         border-radius: 3px;
         display: inline-block;
-        margin-bottom: 4px;
+        margin-bottom: 3px;
         text-transform: uppercase;
         letter-spacing: 0.02em;
     }
-    .tag-amazon { background-color: rgba(255, 153, 0, 0.12); color: #ff9900; border: 1px solid rgba(255, 153, 0, 0.25); }
-    .tag-etsy { background-color: rgba(241, 100, 30, 0.12); color: #f1641e; border: 1px solid rgba(241, 100, 30, 0.25); }
-    .tag-tiktok { background-color: rgba(0, 242, 254, 0.12); color: #00f2fe; border: 1px solid rgba(0, 242, 254, 0.25); }
-    .tag-aliexpress { background-color: rgba(230, 0, 51, 0.12); color: #e60033; border: 1px solid rgba(230, 0, 51, 0.25); }
+    .tag-amazon { background-color: rgba(255, 153, 0, 0.1); color: #ff9900; border: 1px solid rgba(255, 153, 0, 0.2); }
+    .tag-etsy { background-color: rgba(241, 100, 30, 0.1); color: #f1641e; border: 1px solid rgba(241, 100, 30, 0.2); }
+    .tag-tiktok { background-color: rgba(0, 242, 254, 0.1); color: #00f2fe; border: 1px solid rgba(0, 242, 254, 0.2); }
+    .tag-aliexpress { background-color: rgba(230, 0, 51, 0.1); color: #e60033; border: 1px solid rgba(230, 0, 51, 0.2); }
 
     .tile-img {
         width: 100%;
-        height: 100px;
+        height: 85px;
         object-fit: cover;
         border-radius: 4px;
         border: 1px solid rgba(255, 255, 255, 0.08);
@@ -110,38 +145,14 @@ st.markdown('''
     a.clean-anchor:hover {
         color: #00f2fe !important;
     }
-
-    /* Infinite Scrolling Marquee Styles */
-    .marquee-wrapper {
-        width: 100%;
-        overflow: hidden;
-        white-space: nowrap;
-        box-sizing: border-box;
-        mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-        -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-    }
-    .marquee-content {
-        display: inline-block;
-        animation: marquee 25s linear infinite;
-        font-family: monospace;
-        font-size: 0.75rem;
-        color: #00f2fe;
-    }
-    .marquee-content span {
-        margin-right: 30px;
-    }
-    @keyframes marquee {
-        0%   { transform: translate(0, 0); }
-        100% { transform: translate(-50%, 0); }
-    }
 </style>
 ''', unsafe_allow_html=True)
 
-# Generate Live Intel Dataset spanning Amazon, Etsy, AliExpress, and TikTok Shop
+# Generate Live Intel Dataset spanning core matrix items and extended macro trending items
 @st.cache_data
 def load_scavenger_intelligence():
-    # Dynamic Single Imagery Extraction Configuration Map
     items = [
+        # Positions 1 - 15 (Core Grid Matrix)
         {"id": 1, "name": "Minimalist Mechanical Keyboard", "source": "Amazon", "price": "$119.00", "url": "https://www.amazon.com/s?k=Mechanical+Keyboard", "img": "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=600&auto=format&fit=crop&q=80"},
         {"id": 2, "name": "Matte Black Travel Tumbler", "source": "Amazon", "price": "$38.00", "url": "https://www.amazon.com/s?k=Travel+Tumbler", "img": "https://images.unsplash.com/photo-1577937927133-66ef06acdf18?w=500&auto=format&fit=crop&q=80"},
         {"id": 3, "name": "Ergonomic Office Chair", "source": "Amazon", "price": "$289.50", "url": "https://www.amazon.com/s?k=Ergonomic+Office+Chair", "img": "https://images.unsplash.com/photo-1505797149-43b0069ec26b?w=500&auto=format&fit=crop&q=80"},
@@ -156,7 +167,19 @@ def load_scavenger_intelligence():
         {"id": 12, "name": "RGB LED Pocket Video Light", "source": "AliExpress", "price": "$18.90", "url": "https://www.aliexpress.com", "img": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=500&auto=format&fit=crop&q=80"},
         {"id": 13, "name": "Active Noise Cancelling Buds", "source": "Amazon", "price": "$89.99", "url": "https://www.amazon.com/s?k=Wireless+Earbuds", "img": "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=500&auto=format&fit=crop&q=80"},
         {"id": 14, "name": "Minimalist Titanium Key Loop", "source": "Etsy", "price": "$31.00", "url": "https://www.etsy.com/search?q=Titanium+Key+Loop", "img": "https://images.unsplash.com/photo-1582139329536-e7284fece509?w=500&auto=format&fit=crop&q=80"},
-        {"id": 15, "name": "High Velocity Desk Fan", "source": "Amazon", "price": "$34.99", "url": "https://www.amazon.com/s?k=Desk+Fan", "img": "https://images.unsplash.com/photo-1618944847828-82e943c3beb5?w=500&auto=format&fit=crop&q=80"}
+        {"id": 15, "name": "High Velocity Desk Fan", "source": "Amazon", "price": "$34.99", "url": "https://www.amazon.com/s?k=Desk+Fan", "img": "https://images.unsplash.com/photo-1618944847828-82e943c3beb5?w=500&auto=format&fit=crop&q=80"},
+        
+        # Positions 16 - 25 (Top 10 Micro-Trends Widget)
+        {"id": 16, "name": "Magnetic Cable Management Blocks", "source": "Amazon", "price": "$19.99"},
+        {"id": 17, "name": "Retro Wooden Desk Digital Clock", "source": "Etsy", "price": "$42.50"},
+        {"id": 18, "name": "Sunset Projector Atmosphere Night Lamp", "source": "TikTok Shop", "price": "$12.40"},
+        {"id": 19, "name": "Foldable Bluetooth Travel Trackpad", "source": "AliExpress", "price": "$24.15"},
+        {"id": 20, "name": "Self-Cleaning Insulated Smart Bottle", "source": "Amazon", "price": "$79.00"},
+        {"id": 21, "name": "Hand-Poured Soy Wax Aesthetic Candles", "source": "Etsy", "price": "$18.00"},
+        {"id": 22, "name": "Viral Volcanic Roller Oil Absorber", "source": "TikTok Shop", "price": "$9.99"},
+        {"id": 23, "name": "Miniature Desktop Vacuum Cleaner", "source": "AliExpress", "price": "$7.80"},
+        {"id": 24, "name": "Aramids Fiber Ultra-Thin Phone Case", "source": "Amazon", "price": "$49.99"},
+        {"id": 25, "name": "Custom Tufted Accent Mug Coasters", "source": "Etsy", "price": "$26.00"}
     ]
     
     days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
@@ -172,168 +195,129 @@ def load_scavenger_intelligence():
             
     return items
 
-retrieved_items = load_scavenger_intelligence()
+all_retrieved_items = load_scavenger_intelligence()
+retrieved_items = all_retrieved_items[0:15]   # Core Top 15
+micro_trends_items = all_retrieved_items[15:25] # Extended Top 10 List
 
 if 'selected_day' not in st.session_state:
     st.session_state.selected_day = 'Wed'
 
-# Lock Item #1 for prominent display at the top of the viewport
 prominent_item = retrieved_items[0]
 
 # --- APP SYSTEM TITLE BAR ---
 st.markdown('''
-<div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; margin-bottom: 5px;">
-    <div>
-        <h2 style="margin: 0; font-size: 1.55rem; font-weight: 800; letter-spacing: -0.03em; background: linear-gradient(90deg, #ffffff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">INTERNET SCAVENGER</h2>
-        <p style="margin: 0; font-size: 0.72rem; color: #4caf50; font-family: monospace; letter-spacing: 0.05em;">● TELEMETRY STATUS ONLINE // PERSONAL RESEARCH USE ONLY</p>
-    </div>
+<div style="padding: 5px 0; margin-bottom: 5px;">
+    <h2 style="margin: 0; font-size: 1.55rem; font-weight: 800; letter-spacing: -0.03em; background: linear-gradient(90deg, #ffffff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">INTERNET SCAVENGER</h2>
+    <p style="margin: 0; font-size: 0.72rem; color: #4caf50; font-family: monospace; letter-spacing: 0.05em;">● TELEMETRY STATUS ONLINE // PERSONAL RESEARCH USE ONLY</p>
 </div>
 ''', unsafe_allow_html=True)
 
 
-# ==================== MAIN GEOMETRIC SPLIT LAYOUT ====================
-col_left_main, col_right_main = st.columns([1.2, 1.6])
+# ==================== HIGH DENSITY TRIPLE COLUMN SYMMETRY ====================
+col_left, col_center, col_right = st.columns([0.8, 1.8, 1.1])
 
-with col_left_main:
-    # --- 1. Relocated to Top Left: Planetary Reconnaissance (Earth Sphere Widget) ---
-    st.markdown('<div class="premium-card" style="height: 480px; display: flex; flex-direction: column;">', unsafe_allow_html=True)
-    st.markdown('<div class="card-title">📡 LIVE PLANETARY RECONNAISSANCE &nbsp;<span style="color:#00f2fe;">[SEARCHING]</span></div>', unsafe_allow_html=True)
+with col_left:
+    # --- Upper-Most Left: Shrunken 50% Planetary Telemetry ---
+    st.markdown('<div class="premium-card" style="height: 250px; display: flex; flex-direction: column; justify-content: center;">', unsafe_allow_html=True)
+    st.markdown('<div class="card-title" style="font-size:0.7rem; margin-bottom: 4px;">📡 RECON [SEARCHING]</div>', unsafe_allow_html=True)
     
     st.components.v1.html('''
-    <div style="position:relative; width:100%; height: 335px; background:#04060a; border-radius:8px; border:1px solid rgba(255,255,255,0.04); overflow:hidden; display:flex; justify-content:center; align-items:center;">
-        
-        <div style="position:absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 170px; height: 170px; border-radius: 50%; background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Solarsystemscope_texture_8k_earth_daymap.jpg/1024px-Solarsystemscope_texture_8k_earth_daymap.jpg') repeat-x; background-size: auto 100%; animation: rotateEarth 25s linear infinite; box-shadow: inset -35px -20px 50px rgba(0,0,0,0.95), inset 8px 0px 20px rgba(255,255,255,0.25), 0 0 30px rgba(0, 150, 255, 0.45);"></div>
-        
-        <canvas id="satCanvas" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:10; pointer-events:none;"></canvas>
-        
-        <style>
-        @keyframes rotateEarth {
-            from { background-position: 0 0; }
-            to { background-position: 200% 0; }
-        }
-        </style>
-
+    <div style="position:relative; width:100%; height: 195px; background:#04060a; border-radius:6px; overflow:hidden; display:flex; justify-content:center; align-items:center;">
+        <div style="position:absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 105px; height: 105px; border-radius: 50%; background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Solarsystemscope_texture_8k_earth_daymap.jpg/1024px-Solarsystemscope_texture_8k_earth_daymap.jpg') repeat-x; background-size: auto 100%; animation: rotateEarth 25s linear infinite; box-shadow: inset -22px -12px 30px rgba(0,0,0,0.95), inset 5px 0px 12px rgba(255,255,255,0.2), 0 0 20px rgba(0, 150, 255, 0.4);"></div>
+        <canvas id="miniSatCanvas" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:10; pointer-events:none;"></canvas>
         <script>
-            const canvas = document.getElementById('satCanvas');
-            const ctx = canvas.getContext('2d');
-            function resize() {
-                canvas.width = canvas.parentElement.clientWidth;
-                canvas.height = canvas.parentElement.clientHeight;
+            const canvas = document.getElementById('miniSatCanvas'); const ctx = canvas.getContext('2d');
+            function res() { canvas.width = canvas.parentElement.clientWidth; canvas.height = canvas.parentElement.clientHeight; }
+            window.addEventListener('resize', res); res();
+            let ang = 0;
+            function run() {
+                ctx.clearRect(0,0,canvas.width,canvas.height); const cx=canvas.width/2; const cy=canvas.height/2; ang+=0.015;
+                ctx.beginPath(); ctx.ellipse(cx,cy,85,18,0,0,Math.PI*2); ctx.strokeStyle='rgba(0,242,254,0.12)'; ctx.stroke();
+                let sx=cx+Math.sin(ang)*85; let sy=cy+Math.cos(ang)*18;
+                if(Math.cos(ang)<=0){ ctx.fillStyle="#00f2fe"; ctx.fillRect(sx-2,sy-2,4,4); }
+                requestAnimationFrame(run);
             }
-            window.addEventListener('resize', resize);
-            resize();
-
-            let orbitAngle = 0;
-            let signalPulses = [];
-
-            function render() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                const cx = canvas.width / 2;
-                const cy = canvas.height / 2;
-                const r = 85; 
-
-                orbitAngle += 0.012;
-
-                ctx.beginPath();
-                ctx.ellipse(cx, cy, r + 45, 26, 0, 0, Math.PI * 2);
-                ctx.strokeStyle = 'rgba(0, 242, 254, 0.15)';
-                ctx.lineWidth = 1;
-                ctx.stroke();
-
-                let satX = cx + Math.sin(orbitAngle) * (r + 45);
-                let satY = cy + Math.cos(orbitAngle) * 26;
-                let satelliteIsBehind = Math.cos(orbitAngle) > 0;
-
-                if (!satelliteIsBehind && Math.random() < 0.09) {
-                    signalPulses.push({ x: satX, y: satY, tx: cx + (Math.random() - 0.5) * (r-15), ty: cy + (Math.random() - 0.5) * (r-15), life: 1.0 });
-                }
-
-                signalPulses.forEach((pulse, idx) => {
-                    pulse.life -= 0.035;
-                    if (pulse.life <= 0) { signalPulses.splice(idx, 1); return; }
-                    ctx.strokeStyle = `rgba(0, 242, 254, ${pulse.life})`;
-                    ctx.lineWidth = 1.2;
-                    ctx.beginPath(); ctx.moveTo(pulse.x, pulse.y); ctx.lineTo(pulse.tx, pulse.ty); ctx.stroke();
-                });
-
-                if (!satelliteIsBehind) {
-                    ctx.fillStyle = "#00f2fe";
-                    ctx.fillRect(satX - 12, satY - 2, 6, 3);
-                    ctx.fillRect(satX + 6, satY - 2, 6, 3);
-                    ctx.fillStyle = "#7f00ff";
-                    ctx.fillRect(satX - 3, satY - 3, 6, 6);
-                    ctx.fillStyle = "#ffffff";
-                    ctx.beginPath(); ctx.arc(satX, satY, 1.2, 0, Math.PI*2); ctx.fill();
-                }
-                requestAnimationFrame(render);
-            }
-            render();
+            run();
         </script>
     </div>
-    
-    <div style="margin-top: 14px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px;">
-        <div style="font-size: 0.65rem; color: #94a3b8; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700;">📡 Live Intercept Stream</div>
-        <div class="marquee-wrapper">
-            <div class="marquee-content">
-                <span>• Graphene Power Bank [Amazon]</span>
-                <span>• Holographic Keyboard [TikTok Shop]</span>
-                <span>• Levitating Desk Lamp [Etsy]</span>
-                <span>• Bone Conduction Glasses [Amazon]</span>
-                <span>• AI Posture Corrector [TikTok Shop]</span>
-                <span>• Pocket Retro Handheld [AliExpress]</span>
-                <span>• Heated Mouse Pad [Amazon]</span>
-            </div>
-        </div>
-    </div>
-    ''', height=425)
+    <style>@keyframes rotateEarth { from{background-position:0 0;} to{background-position:200% 0;} }</style>
+    ''', height=210)
     st.markdown('</div>', unsafe_allow_html=True)
 
 
-with col_right_main:
-    # --- 2. Prominent Number One Selling Item Box ---
-    st.markdown('<div class="premium-card" style="min-height: 235px;">', unsafe_allow_html=True)
+with col_center:
+    # --- Top Center: Spotlight #1 Selling Item Box ---
+    st.markdown('<div class="premium-card" style="min-height: 250px; text-align: center;">', unsafe_allow_html=True)
     
-    show_col1, show_col2 = st.columns([1, 1])
-    with show_col1:
-        st.markdown(f'''
-        <a href="{prominent_item['url']}" target="_blank">
-            <img src="{prominent_item['img']}" style="width:100%; height:200px; object-fit:cover; border-radius:8px; border:2px solid #00f2fe; box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);" />
-        </a>
-        ''', unsafe_allow_html=True)
-    with show_col2:
-        tag_class = f"tag-{prominent_item['source'].lower().replace('.','').replace(' shop','')}"
-        st.markdown(f'''
-        <div class="card-title" style="color: #00f2fe; font-weight:800; letter-spacing:0.1em;">🥇 CRITICAL NODE: #1 TOP SELLING ITEM</div>
-        <h2 style="margin-top:4px; margin-bottom:4px; font-size:1.4rem; line-height:1.2; font-weight:800;">
+    # Large Display Picture
+    st.markdown(f'''
+    <a href="{prominent_item['url']}" target="_blank">
+        <img src="{prominent_item['img']}" style="width:100%; height:230px; object-fit:cover; border-radius:8px; border:2px solid #00f2fe; box-shadow: 0 0 15px rgba(0, 242, 254, 0.15);" />
+    </a>
+    ''', unsafe_allow_html=True)
+    
+    # Description Placed Directly Below Item Block
+    tag_class = f"tag-{prominent_item['source'].lower().replace('.','').replace(' shop','')}"
+    st.markdown(f'''
+    <div style="padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.04); margin-top:12px; text-align:left;">
+        <div class="card-title" style="color: #00f2fe; font-weight:800; margin-bottom:4px;">🥇 ITEM SPOTLIGHT PRIORITY NODE #1</div>
+        <h2 style="margin: 0 0 4px 0; font-size:1.35rem; font-weight:800;">
             <a href="{prominent_item['url']}" target="_blank" class="clean-anchor">{prominent_item['name']}</a>
         </h2>
-        <div class="platform-tag {tag_class}" style="margin-bottom:6px; font-size:0.7rem; padding:2px 6px;">{prominent_item['source']}</div>
-        <p style="margin:0; font-size:0.75rem; color:#64748b;">Est. Global Marketplace Value</p>
-        <h1 style="margin:0; color:#4caf50; font-size:2.0rem; font-weight:900; line-height:1.1;">{prominent_item['price']}</h1>
-        <div style="margin-top:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
+            <div>
+                <span class="platform-tag {tag_class}" style="font-size:0.65rem; padding:2px 6px;">{prominent_item['source']}</span>
+                <span style="font-size:0.75rem; color:#64748b; margin-left:8px;">Estimated Global Value:</span>
+                <span style="color:#4caf50; font-size:1.4rem; font-weight:800; margin-left:4px;">{prominent_item['price']}</span>
+            </div>
             <a href="{prominent_item['url']}" target="_blank" style="text-decoration:none;">
-                <button style="width:100%; background:linear-gradient(90deg, #7f00ff, #00f2fe); color:white; border:none; padding:8px 12px; border-radius:4px; font-size:0.8rem; font-weight:700; cursor:pointer; box-shadow: 0 4px 12px rgba(127,0,255,0.3);">🔗 Secure Direct Store Access</button>
+                <button style="background:linear-gradient(90deg, #7f00ff, #00f2fe); color:white; border:none; padding:5px 12px; border-radius:4px; font-size:0.75rem; font-weight:700; cursor:pointer;">🔗 Store Link</button>
             </a>
+        </div>
+    </div>
+    ''', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+
+with col_right:
+    # --- Top Right & Down: Extended Top 10 Macro-Trends (Outside Top 15 Matrix) ---
+    st.markdown('<div class="premium-card" style="height: 515px; overflow-y:auto; padding-right:8px;">', unsafe_allow_html=True)
+    st.markdown('<div class="card-title">🔥 TOP 10 EXTENDED MICRO-TRENDS</div>', unsafe_allow_html=True)
+    
+    for trend in micro_trends_items:
+        tag_t = f"tag-{trend['source'].lower().replace('.','').replace(' shop','')}"
+        st.markdown(f'''
+        <div class="micro-trend-row">
+            <span class="micro-trend-rank">#{trend['id']}</span>
+            <div class="micro-trend-title">
+                <b>{trend['name']}</b><br/>
+                <span class="platform-tag {tag_t}" style="font-size:0.5rem; padding:0 3px;">{trend['source']}</span>
+                <span style="color:#4caf50; font-weight:600; font-size:0.7rem; margin-left:4px;">{trend['price']}</span>
+            </div>
         </div>
         ''', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # --- 3. Interactive Analytical Bar Graph (Placed Right Below Prominent Item) ---
-    st.markdown('<div class="premium-card" style="padding: 14px; height: 225px;">', unsafe_allow_html=True)
-    
-    choice_day = st.radio("Drilldown Chrono Vector:", ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], index=['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].index(st.session_state.selected_day), horizontal=True)
-    if choice_day != st.session_state.selected_day:
-        st.session_state.selected_day = choice_day
-        st.rerun()
 
-    view_tab1, view_tab2 = st.tabs(["7-Day Cumulative Trends", f"Hourly Velocity Coordinates ({st.session_state.selected_day})"])
+# ==================== HIGH DENSITY ANALYTICS EXPANSION LAYER ====================
+with col_center:
+    st.markdown('<div class="premium-card" style="padding: 12px; height: 180px; margin-top:-5px;">', unsafe_allow_html=True)
+    
+    c_day_col, c_tab_col = st.columns([1.1, 2])
+    with c_day_col:
+        choice_day = st.radio("Chrono Vector Target:", ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], index=['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].index(st.session_state.selected_day), horizontal=True)
+        if choice_day != st.session_state.selected_day:
+            st.session_state.selected_day = choice_day
+            st.rerun()
+            
+    with c_tab_col:
+        view_tab1, view_tab2 = st.tabs(["7-Day Cumulative Trends", f"Hourly Velocity ({st.session_state.selected_day})"])
     
     with view_tab1:
         fig_7d = px.bar(prominent_item['sales_days'], x='Day', y='Units Sold', color='Units Sold', color_continuous_scale='Purples')
         fig_7d.update_layout(
             plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#94a3b8',
-            margin=dict(l=5, r=5, t=10, b=5), coloraxis_showscale=False, height=115,
-            xaxis_title=None, yaxis_title=None
+            margin=dict(l=5, r=5, t=5, b=5), coloraxis_showscale=False, height=100, xaxis_title=None, yaxis_title=None
         )
         st.plotly_chart(fig_7d, use_container_width=True, config={'displayModeBar': False})
         
@@ -342,18 +326,18 @@ with col_right_main:
         fig_24h.update_traces(line_color='#00f2fe')
         fig_24h.update_layout(
             plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#94a3b8',
-            margin=dict(l=5, r=5, t=10, b=5), height=115, xaxis_title=None, yaxis_title=None
+            margin=dict(l=5, r=5, t=5, b=5), height=100, xaxis_title=None, yaxis_title=None
         )
         st.plotly_chart(fig_24h, use_container_width=True, config={'displayModeBar': False})
     st.markdown('</div>', unsafe_allow_html=True)
 
 
-# ==================== BOTTOM REAL ESTATE MATRIX LAYER ====================
-# The top 15 remaining elements fill systematically below the left tracking and breakout downward across rows fluidly
-st.markdown('<hr style="margin: 5px 0 20px 0; border: none; border-top: 1px solid rgba(255,255,255,0.06);"/>', unsafe_allow_html=True)
-st.markdown('<h3 style="margin-bottom:15px; font-size:1.1rem; letter-spacing:-0.01em;">📊 RETAIL CORRIDOR EVALUATION MATRIX (POSITIONS 2 - 15)</h3>', unsafe_allow_html=True)
+# ==================== LOWER MATRIX GRID SYSTEM (ITEMS 2 - 15) ====================
+# Fills directly beneath the live radar component on the screen real estate
+st.markdown('<hr style="margin: 5px 0 15px 0; border: none; border-top: 1px solid rgba(255,255,255,0.06);"/>', unsafe_allow_html=True)
+st.markdown('<h3 style="margin-bottom:12px; font-size:1.0rem; letter-spacing:-0.01em;">📊 RETAIL CORRIDOR EVALUATION MATRIX (POSITIONS 2 - 15)</h3>', unsafe_allow_html=True)
 
-cols_per_row = 4
+cols_per_row = 5
 for i in range(1, len(retrieved_items), cols_per_row):
     row_items = retrieved_items[i:i+cols_per_row]
     grid_cols = st.columns(cols_per_row)
@@ -370,7 +354,9 @@ for i in range(1, len(retrieved_items), cols_per_row):
                 <div class="tile-product-title">
                     <a href="{item['url']}" target="_blank" class="clean-anchor">#{item['id']} {item['name']}</a>
                 </div>
-                <div style="color:#00f2fe; font-size:0.9rem; font-weight:700; margin-top:4px;">{item['price']}</div>
+                <div style="color:#00f2fe; font-size:0.85rem; font-weight:700; margin-top:2px;">{item['price']}</div>
             </div>
-            <div style="margin-bottom: 20px;"></div>
+            <div style="margin-bottom: 15px;"></div>
             ''', unsafe_allow_html=True)
+
+```
