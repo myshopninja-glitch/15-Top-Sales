@@ -1,14 +1,3 @@
-To accommodate this layout, we need to restructure the dashboard into a highly efficient **3-column grid system** across the upper horizontal fold.
-
-### 📐 Mechanical Layout Overhaul
-
-* **Left Column (`col_left`):** Holds the newly shrunken 3D Earth Telemetry card. Immediately below it, the Top 15 item grid begins filling out.
-* **Center Column (`col_center`):** Houses the #1 Spotlight item, its details directly below the picture, and the time-series bar charts below that.
-* **Right Column (`col_right`):** Dedicated entirely to a new high-density vertical list featuring the **Top 10 Micro-Trending Items** (Items #16–25) that sit completely outside your core tracking matrix.
-
-Here is your fully updated, ready-to-run `app.py` script:
-
-```python
 import streamlit as st
 import pandas as pd
 import plotly.express as px
