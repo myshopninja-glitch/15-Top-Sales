@@ -416,4 +416,4 @@ with col_right:
         </div>
         ''', unsafe_allow_html=True)
         if i < 10:
-            st.markdown('<hr style="margin: 6px 0; border: none; border-top: 1px solid rgba(255,255,25
+            st.markdown('<hr style="margin: 6px 0; border: none; border-top: 1px solid rgba(255,255,255,0.05);"/>', unsafe_allow_html=True)
