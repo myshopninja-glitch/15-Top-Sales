@@ -1,4 +1,3 @@
-import random
 import numpy as np
 import pandas as pd
 import plotly.express as px
@@ -28,6 +27,11 @@ STYLING = """
         color: #ffffff;
         font-weight: 700;
         letter-spacing: -0.02em;
+    }
+
+    /* Streamlit Container Card Overrides */
+    div[data-testid="stVerticalBlock"] > div.element-container {
+        margin-bottom: 0px;
     }
 
     /* Premium Translucent Glassmorphism Cards */
@@ -183,11 +187,9 @@ def load_scavenger_intelligence():
         rng = np.random.default_rng(seed=idx + 1)
         base_sales = rng.integers(500, 2500)
         
-        # Daily sales generation
         daily_units = (base_sales * rng.uniform(0.8, 1.3, size=len(days))).astype(int)
         sales_days = pd.DataFrame({'Day': days, 'Units Sold': daily_units})
         
-        # Hourly sales generation
         sales_hours = {}
         for day in days:
             hourly_variance = 1 + 0.5 * rng.uniform(-0.6, 1.0, size=24)
@@ -210,7 +212,6 @@ retrieved_items = all_retrieved_items[:15]
 micro_trends_items = all_retrieved_items[15:25]
 prominent_item = retrieved_items[0]
 
-# Session State Initialization
 if 'selected_day' not in st.session_state:
     st.session_state.selected_day = 'Wed'
 
@@ -229,35 +230,34 @@ col_left, col_center, col_right = st.columns([0.8, 1.8, 1.1])
 
 # --- LEFT COLUMN: RECON RADAR ---
 with col_left:
-    st.markdown('<div class="premium-card" style="height: 250px; display: flex; flex-direction: column; justify-content: center;">', unsafe_allow_html=True)
-    st.markdown('<div class="card-title" style="font-size:0.7rem; margin-bottom: 4px;">📡 RECON [SEARCHING]</div>', unsafe_allow_html=True)
-    
     st.components.v1.html('''
-    <div style="position:relative; width:100%; height: 195px; background:#04060a; border-radius:6px; overflow:hidden; display:flex; justify-content:center; align-items:center;">
-        <div style="position:absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 105px; height: 105px; border-radius: 50%; background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Solarsystemscope_texture_8k_earth_daymap.jpg/1024px-Solarsystemscope_texture_8k_earth_daymap.jpg') repeat-x; background-size: auto 100%; animation: rotateEarth 25s linear infinite; box-shadow: inset -22px -12px 30px rgba(0,0,0,0.95), inset 5px 0px 12px rgba(255,255,255,0.2), 0 0 20px rgba(0, 150, 255, 0.4);"></div>
-        <canvas id="miniSatCanvas" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:10; pointer-events:none;"></canvas>
-        <script>
-            const canvas = document.getElementById('miniSatCanvas'); 
-            const ctx = canvas.getContext('2d');
-            function res() { canvas.width = canvas.parentElement.clientWidth; canvas.height = canvas.parentElement.clientHeight; }
-            window.addEventListener('resize', res); res();
-            let ang = 0;
-            function run() {
-                ctx.clearRect(0,0,canvas.width,canvas.height); 
-                const cx=canvas.width/2; 
-                const cy=canvas.height/2; 
-                ang+=0.015;
-                ctx.beginPath(); ctx.ellipse(cx,cy,85,18,0,0,Math.PI*2); ctx.strokeStyle='rgba(0,242,254,0.12)'; ctx.stroke();
-                let sx=cx+Math.sin(ang)*85; let sy=cy+Math.cos(ang)*18;
-                if(Math.cos(ang)<=0){ ctx.fillStyle="#00f2fe"; ctx.fillRect(sx-2,sy-2,4,4); }
-                requestAnimationFrame(run);
-            }
-            run();
-        </script>
+    <div style="background: rgba(13, 18, 28, 0.75); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 12px; padding: 14px; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); height: 250px; box-sizing: border-box;">
+        <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: #94a3b8; font-weight: 600; font-family: sans-serif; margin-bottom: 6px;">📡 RECON [SEARCHING]</div>
+        <div style="position:relative; width:100%; height: 195px; background:#04060a; border-radius:6px; overflow:hidden; display:flex; justify-content:center; align-items:center;">
+            <div style="position:absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 105px; height: 105px; border-radius: 50%; background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Solarsystemscope_texture_8k_earth_daymap.jpg/1024px-Solarsystemscope_texture_8k_earth_daymap.jpg') repeat-x; background-size: auto 100%; animation: rotateEarth 25s linear infinite; box-shadow: inset -22px -12px 30px rgba(0,0,0,0.95), inset 5px 0px 12px rgba(255,255,255,0.2), 0 0 20px rgba(0, 150, 255, 0.4);"></div>
+            <canvas id="miniSatCanvas" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:10; pointer-events:none;"></canvas>
+            <script>
+                const canvas = document.getElementById('miniSatCanvas'); 
+                const ctx = canvas.getContext('2d');
+                function res() { canvas.width = canvas.parentElement.clientWidth; canvas.height = canvas.parentElement.clientHeight; }
+                window.addEventListener('resize', res); res();
+                let ang = 0;
+                function run() {
+                    ctx.clearRect(0,0,canvas.width,canvas.height); 
+                    const cx=canvas.width/2; 
+                    const cy=canvas.height/2; 
+                    ang+=0.015;
+                    ctx.beginPath(); ctx.ellipse(cx,cy,85,18,0,0,Math.PI*2); ctx.strokeStyle='rgba(0,242,254,0.12)'; ctx.stroke();
+                    let sx=cx+Math.sin(ang)*85; let sy=cy+Math.cos(ang)*18;
+                    if(Math.cos(ang)<=0){ ctx.fillStyle="#00f2fe"; ctx.fillRect(sx-2,sy-2,4,4); }
+                    requestAnimationFrame(run);
+                }
+                run();
+            </script>
+        </div>
     </div>
     <style>@keyframes rotateEarth { from{background-position:0 0;} to{background-position:200% 0;} }</style>
-    ''', height=210)
-    st.markdown('</div>', unsafe_allow_html=True)
+    ''', height=265)
 
 # --- CENTER COLUMN: SPOTLIGHT ITEM & ANALYTICS ---
 with col_center:
@@ -286,50 +286,44 @@ with col_center:
     </div>
     ''', unsafe_allow_html=True)
 
-    # Analytics Matrix Card
-    st.markdown('<div class="premium-card" style="padding: 12px; height: 180px; margin-top:-5px;">', unsafe_allow_html=True)
-    c_day_col, c_tab_col = st.columns([1.1, 2])
-    
-    with c_day_col:
-        st.radio(
-            "Chrono Vector Target:",
-            ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-            key='selected_day',
-            horizontal=True
-        )
-            
-    with c_tab_col:
-        view_tab1, view_tab2 = st.tabs(["7-Day Cumulative Trends", f"Hourly Velocity ({st.session_state.selected_day})"])
+    # Analytics Matrix Container
+    with st.container(border=True):
+        c_day_col, c_tab_col = st.columns([1.1, 2])
         
-        # Shared Chart Configuration Settings
-        chart_layout = dict(
-            plot_bgcolor='rgba(0,0,0,0)',
-            paper_bgcolor='rgba(0,0,0,0)',
-            font_color='#94a3b8',
-            margin=dict(l=5, r=5, t=5, b=5),
-            height=100,
-            xaxis_title=None,
-            yaxis_title=None
-        )
+        with c_day_col:
+            st.radio(
+                "Chrono Vector Target:",
+                ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+                key='selected_day',
+                horizontal=True
+            )
+                
+        with c_tab_col:
+            view_tab1, view_tab2 = st.tabs(["7-Day Cumulative Trends", f"Hourly Velocity ({st.session_state.selected_day})"])
+            
+            chart_layout = dict(
+                plot_bgcolor='rgba(0,0,0,0)',
+                paper_bgcolor='rgba(0,0,0,0)',
+                font_color='#94a3b8',
+                margin=dict(l=5, r=5, t=5, b=5),
+                height=110,
+                xaxis_title=None,
+                yaxis_title=None
+            )
 
-        with view_tab1:
-            fig_7d = px.bar(prominent_item['sales_days'], x='Day', y='Units Sold', color='Units Sold', color_continuous_scale='Purples')
-            fig_7d.update_layout(**chart_layout, coloraxis_showscale=False)
-            st.plotly_chart(fig_7d, use_container_width=True, config={'displayModeBar': False})
-            
-        with view_tab2:
-            fig_24h = px.line(prominent_item['sales_hours'][st.session_state.selected_day], x='Hour', y='Units Sold')
-            fig_24h.update_traces(line_color='#00f2fe')
-            fig_24h.update_layout(**chart_layout)
-            st.plotly_chart(fig_24h, use_container_width=True, config={'displayModeBar': False})
-            
-    st.markdown('</div>', unsafe_allow_html=True)
+            with view_tab1:
+                fig_7d = px.bar(prominent_item['sales_days'], x='Day', y='Units Sold', color='Units Sold', color_continuous_scale='Purples')
+                fig_7d.update_layout(**chart_layout, coloraxis_showscale=False)
+                st.plotly_chart(fig_7d, use_container_width=True, config={'displayModeBar': False})
+                
+            with view_tab2:
+                fig_24h = px.line(prominent_item['sales_hours'][st.session_state.selected_day], x='Hour', y='Units Sold')
+                fig_24h.update_traces(line_color='#00f2fe')
+                fig_24h.update_layout(**chart_layout)
+                st.plotly_chart(fig_24h, use_container_width=True, config={'displayModeBar': False})
 
 # --- RIGHT COLUMN: MICRO-TRENDS FEED ---
 with col_right:
-    st.markdown('<div class="premium-card" style="height: 515px; overflow-y:auto; padding-right:8px;">', unsafe_allow_html=True)
-    st.markdown('<div class="card-title">🔥 TOP 10 EXTENDED MICRO-TRENDS</div>', unsafe_allow_html=True)
-    
     trend_rows = []
     for trend in micro_trends_items:
         tag_t = get_platform_tag(trend['source'])
@@ -343,8 +337,14 @@ with col_right:
             </div>
         </div>
         ''')
-    st.markdown("".join(trend_rows), unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+        
+    full_trends_html = f'''
+    <div class="premium-card" style="height: 520px; overflow-y:auto; padding-right:8px;">
+        <div class="card-title">🔥 TOP 10 EXTENDED MICRO-TRENDS</div>
+        {"".join(trend_rows)}
+    </div>
+    '''
+    st.markdown(full_trends_html, unsafe_allow_html=True)
 
 
 # ==================== LOWER MATRIX GRID (ITEMS 2 - 15) ====================
