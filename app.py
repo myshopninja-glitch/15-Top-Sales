@@ -1,13 +1,18 @@
-import streamlit as st
+import random
+import numpy as np
 import pandas as pd
 import plotly.express as px
-import random
+import streamlit as st
 
-# Page config for modern high-density dark dashboard layout
-st.set_page_config(page_title="Internet Scavenger", layout="wide", initial_sidebar_state="collapsed")
+# ==================== CONFIG & THEME INITIALIZATION ====================
+st.set_page_config(
+    page_title="Internet Scavenger",
+    layout="wide",
+    initial_sidebar_state="collapsed",
+)
 
-# Premium Minimal Dark UI Stylesheets
-st.markdown('''
+# Custom Glassmorphism Dark Theme
+STYLING = """
 <style>
     /* Global Page Body and Theme Overrides */
     .stApp {
@@ -135,13 +140,14 @@ st.markdown('''
         color: #00f2fe !important;
     }
 </style>
-''', unsafe_allow_html=True)
+"""
+st.markdown(STYLING, unsafe_allow_html=True)
 
-# Generate Live Intel Dataset spanning core matrix items and extended macro trending items
+
+# ==================== DATA LAYER (CACHED) ====================
 @st.cache_data(ttl=10800)
 def load_scavenger_intelligence():
-    items = [
-        # Positions 1 - 15 (Core Grid Matrix)
+    raw_items = [
         {"id": 1, "name": "Minimalist Mechanical Keyboard", "source": "Amazon", "price": "$119.00", "url": "https://www.amazon.com/s?k=Mechanical+Keyboard", "img": "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=600&auto=format&fit=crop&q=80"},
         {"id": 2, "name": "Matte Black Travel Tumbler", "source": "Amazon", "price": "$38.00", "url": "https://www.amazon.com/s?k=Travel+Tumbler", "img": "https://images.unsplash.com/photo-1577937927133-66ef06acdf18?w=500&auto=format&fit=crop&q=80"},
         {"id": 3, "name": "Ergonomic Office Chair", "source": "Amazon", "price": "$289.50", "url": "https://www.amazon.com/s?k=Ergonomic+Office+Chair", "img": "https://images.unsplash.com/photo-1505797149-43b0069ec26b?w=500&auto=format&fit=crop&q=80"},
@@ -157,8 +163,6 @@ def load_scavenger_intelligence():
         {"id": 13, "name": "Active Noise Cancelling Buds", "source": "Amazon", "price": "$89.99", "url": "https://www.amazon.com/s?k=Wireless+Earbuds", "img": "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=500&auto=format&fit=crop&q=80"},
         {"id": 14, "name": "Minimalist Titanium Key Loop", "source": "Etsy", "price": "$31.00", "url": "https://www.etsy.com/search?q=Titanium+Key+Loop", "img": "https://images.unsplash.com/photo-1582139329536-e7284fece509?w=500&auto=format&fit=crop&q=80"},
         {"id": 15, "name": "High Velocity Desk Fan", "source": "Amazon", "price": "$34.99", "url": "https://www.amazon.com/s?k=Desk+Fan", "img": "https://images.unsplash.com/photo-1618944847828-82e943c3beb5?w=500&auto=format&fit=crop&q=80"},
-        
-        # Positions 16 - 25 (Top 10 Micro-Trends Widget)
         {"id": 16, "name": "Magnetic Cable Management Blocks", "source": "Amazon", "price": "$19.99"},
         {"id": 17, "name": "Retro Wooden Desk Digital Clock", "source": "Etsy", "price": "$42.50"},
         {"id": 18, "name": "Sunset Projector Atmosphere Night Lamp", "source": "TikTok Shop", "price": "$12.40"},
@@ -172,28 +176,46 @@ def load_scavenger_intelligence():
     ]
     
     days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-    for idx, item in enumerate(items):
-        random.seed(idx + 1)
-        base_sales = random.randint(500, 2500)
-        item['sales_days'] = pd.DataFrame({'Day': days, 'Units Sold': [int(base_sales * random.uniform(0.8, 1.3)) for _ in days]})
+    hours = [f"{h:02d}:00" for h in range(24)]
+    
+    items = []
+    for idx, item in enumerate(raw_items):
+        rng = np.random.default_rng(seed=idx + 1)
+        base_sales = rng.integers(500, 2500)
         
-        item['sales_hours'] = {}
+        # Daily sales generation
+        daily_units = (base_sales * rng.uniform(0.8, 1.3, size=len(days))).astype(int)
+        sales_days = pd.DataFrame({'Day': days, 'Units Sold': daily_units})
+        
+        # Hourly sales generation
+        sales_hours = {}
         for day in days:
-            hourly_data = [int((base_sales / 24) * (1 + 0.5 * random.uniform(-0.6, 1.0))) for _ in range(24)]
-            item['sales_hours'][day] = pd.DataFrame({'Hour': [f"{h:02d}:00" for h in range(24)], 'Units Sold': hourly_data})
+            hourly_variance = 1 + 0.5 * rng.uniform(-0.6, 1.0, size=24)
+            hourly_units = ((base_sales / 24) * hourly_variance).astype(int)
+            sales_hours[day] = pd.DataFrame({'Hour': hours, 'Units Sold': hourly_units})
             
+        item_copy = item.copy()
+        item_copy['sales_days'] = sales_days
+        item_copy['sales_hours'] = sales_hours
+        items.append(item_copy)
+        
     return items
 
-all_retrieved_items = load_scavenger_intelligence()
-retrieved_items = all_retrieved_items[0:15]   # Core Top 15
-micro_trends_items = all_retrieved_items[15:25] # Extended Top 10 List
+def get_platform_tag(source_name: str) -> str:
+    s = source_name.lower().replace('.', '').replace(' shop', '')
+    return f"tag-{s}"
 
+all_retrieved_items = load_scavenger_intelligence()
+retrieved_items = all_retrieved_items[:15]
+micro_trends_items = all_retrieved_items[15:25]
+prominent_item = retrieved_items[0]
+
+# Session State Initialization
 if 'selected_day' not in st.session_state:
     st.session_state.selected_day = 'Wed'
 
-prominent_item = retrieved_items[0]
 
-# --- APP SYSTEM TITLE BAR ---
+# ==================== APP TITLE BAR ====================
 st.markdown('''
 <div style="padding: 5px 0; margin-bottom: 5px;">
     <h2 style="margin: 0; font-size: 1.55rem; font-weight: 800; letter-spacing: -0.03em; background: linear-gradient(90deg, #ffffff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">INTERNET SCAVENGER</h2>
@@ -202,11 +224,11 @@ st.markdown('''
 ''', unsafe_allow_html=True)
 
 
-# ==================== HIGH DENSITY TRIPLE COLUMN SYMMETRY ====================
+# ==================== DASHBOARD GRID ====================
 col_left, col_center, col_right = st.columns([0.8, 1.8, 1.1])
 
+# --- LEFT COLUMN: RECON RADAR ---
 with col_left:
-    # --- Upper-Most Left: Shrunken 50% Planetary Telemetry ---
     st.markdown('<div class="premium-card" style="height: 250px; display: flex; flex-direction: column; justify-content: center;">', unsafe_allow_html=True)
     st.markdown('<div class="card-title" style="font-size:0.7rem; margin-bottom: 4px;">📡 RECON [SEARCHING]</div>', unsafe_allow_html=True)
     
@@ -215,12 +237,16 @@ with col_left:
         <div style="position:absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 105px; height: 105px; border-radius: 50%; background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Solarsystemscope_texture_8k_earth_daymap.jpg/1024px-Solarsystemscope_texture_8k_earth_daymap.jpg') repeat-x; background-size: auto 100%; animation: rotateEarth 25s linear infinite; box-shadow: inset -22px -12px 30px rgba(0,0,0,0.95), inset 5px 0px 12px rgba(255,255,255,0.2), 0 0 20px rgba(0, 150, 255, 0.4);"></div>
         <canvas id="miniSatCanvas" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:10; pointer-events:none;"></canvas>
         <script>
-            const canvas = document.getElementById('miniSatCanvas'); const ctx = canvas.getContext('2d');
+            const canvas = document.getElementById('miniSatCanvas'); 
+            const ctx = canvas.getContext('2d');
             function res() { canvas.width = canvas.parentElement.clientWidth; canvas.height = canvas.parentElement.clientHeight; }
             window.addEventListener('resize', res); res();
             let ang = 0;
             function run() {
-                ctx.clearRect(0,0,canvas.width,canvas.height); const cx=canvas.width/2; const cy=canvas.height/2; ang+=0.015;
+                ctx.clearRect(0,0,canvas.width,canvas.height); 
+                const cx=canvas.width/2; 
+                const cy=canvas.height/2; 
+                ang+=0.015;
                 ctx.beginPath(); ctx.ellipse(cx,cy,85,18,0,0,Math.PI*2); ctx.strokeStyle='rgba(0,242,254,0.12)'; ctx.stroke();
                 let sx=cx+Math.sin(ang)*85; let sy=cy+Math.cos(ang)*18;
                 if(Math.cos(ang)<=0){ ctx.fillStyle="#00f2fe"; ctx.fillRect(sx-2,sy-2,4,4); }
@@ -233,49 +259,81 @@ with col_left:
     ''', height=210)
     st.markdown('</div>', unsafe_allow_html=True)
 
-
+# --- CENTER COLUMN: SPOTLIGHT ITEM & ANALYTICS ---
 with col_center:
-    # --- Top Center: Spotlight #1 Selling Item Box ---
-    st.markdown('<div class="premium-card" style="min-height: 250px; text-align: center;">', unsafe_allow_html=True)
-    
-    # Large Display Picture
+    tag_class = get_platform_tag(prominent_item['source'])
     st.markdown(f'''
-    <a href="{prominent_item['url']}" target="_blank">
-        <img src="{prominent_item['img']}" style="width:100%; height:230px; object-fit:cover; border-radius:8px; border:2px solid #00f2fe; box-shadow: 0 0 15px rgba(0, 242, 254, 0.15);" />
-    </a>
-    ''', unsafe_allow_html=True)
-    
-    # Description Placed Directly Below Item Block
-    tag_class = f"tag-{prominent_item['source'].lower().replace('.','').replace(' shop','')}"
-    st.markdown(f'''
-    <div style="padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.04); margin-top:12px; text-align:left;">
-        <div class="card-title" style="color: #00f2fe; font-weight:800; margin-bottom:4px;">🥇 ITEM SPOTLIGHT PRIORITY NODE #1</div>
-        <h2 style="margin: 0 0 4px 0; font-size:1.35rem; font-weight:800;">
-            <a href="{prominent_item['url']}" target="_blank" class="clean-anchor">{prominent_item['name']}</a>
-        </h2>
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
-            <div>
-                <span class="platform-tag {tag_class}" style="font-size:0.65rem; padding:2px 6px;">{prominent_item['source']}</span>
-                <span style="font-size:0.75rem; color:#64748b; margin-left:8px;">Estimated Global Value:</span>
-                <span style="color:#4caf50; font-size:1.4rem; font-weight:800; margin-left:4px;">{prominent_item['price']}</span>
+    <div class="premium-card" style="min-height: 250px; text-align: center;">
+        <a href="{prominent_item['url']}" target="_blank">
+            <img src="{prominent_item['img']}" style="width:100%; height:230px; object-fit:cover; border-radius:8px; border:2px solid #00f2fe; box-shadow: 0 0 15px rgba(0, 242, 254, 0.15);" />
+        </a>
+        <div style="padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.04); margin-top:12px; text-align:left;">
+            <div class="card-title" style="color: #00f2fe; font-weight:800; margin-bottom:4px;">🥇 ITEM SPOTLIGHT PRIORITY NODE #1</div>
+            <h2 style="margin: 0 0 4px 0; font-size:1.35rem; font-weight:800;">
+                <a href="{prominent_item['url']}" target="_blank" class="clean-anchor">{prominent_item['name']}</a>
+            </h2>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
+                <div>
+                    <span class="platform-tag {tag_class}" style="font-size:0.65rem; padding:2px 6px;">{prominent_item['source']}</span>
+                    <span style="font-size:0.75rem; color:#64748b; margin-left:8px;">Estimated Global Value:</span>
+                    <span style="color:#4caf50; font-size:1.4rem; font-weight:800; margin-left:4px;">{prominent_item['price']}</span>
+                </div>
+                <a href="{prominent_item['url']}" target="_blank" style="text-decoration:none;">
+                    <button style="background:linear-gradient(90deg, #7f00ff, #00f2fe); color:white; border:none; padding:5px 12px; border-radius:4px; font-size:0.75rem; font-weight:700; cursor:pointer;">🔗 Store Link</button>
+                </a>
             </div>
-            <a href="{prominent_item['url']}" target="_blank" style="text-decoration:none;">
-                <button style="background:linear-gradient(90deg, #7f00ff, #00f2fe); color:white; border:none; padding:5px 12px; border-radius:4px; font-size:0.75rem; font-weight:700; cursor:pointer;">🔗 Store Link</button>
-            </a>
         </div>
     </div>
     ''', unsafe_allow_html=True)
+
+    # Analytics Matrix Card
+    st.markdown('<div class="premium-card" style="padding: 12px; height: 180px; margin-top:-5px;">', unsafe_allow_html=True)
+    c_day_col, c_tab_col = st.columns([1.1, 2])
+    
+    with c_day_col:
+        st.radio(
+            "Chrono Vector Target:",
+            ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+            key='selected_day',
+            horizontal=True
+        )
+            
+    with c_tab_col:
+        view_tab1, view_tab2 = st.tabs(["7-Day Cumulative Trends", f"Hourly Velocity ({st.session_state.selected_day})"])
+        
+        # Shared Chart Configuration Settings
+        chart_layout = dict(
+            plot_bgcolor='rgba(0,0,0,0)',
+            paper_bgcolor='rgba(0,0,0,0)',
+            font_color='#94a3b8',
+            margin=dict(l=5, r=5, t=5, b=5),
+            height=100,
+            xaxis_title=None,
+            yaxis_title=None
+        )
+
+        with view_tab1:
+            fig_7d = px.bar(prominent_item['sales_days'], x='Day', y='Units Sold', color='Units Sold', color_continuous_scale='Purples')
+            fig_7d.update_layout(**chart_layout, coloraxis_showscale=False)
+            st.plotly_chart(fig_7d, use_container_width=True, config={'displayModeBar': False})
+            
+        with view_tab2:
+            fig_24h = px.line(prominent_item['sales_hours'][st.session_state.selected_day], x='Hour', y='Units Sold')
+            fig_24h.update_traces(line_color='#00f2fe')
+            fig_24h.update_layout(**chart_layout)
+            st.plotly_chart(fig_24h, use_container_width=True, config={'displayModeBar': False})
+            
     st.markdown('</div>', unsafe_allow_html=True)
 
-
+# --- RIGHT COLUMN: MICRO-TRENDS FEED ---
 with col_right:
-    # --- Top Right & Down: Extended Top 10 Macro-Trends (Outside Top 15 Matrix) ---
     st.markdown('<div class="premium-card" style="height: 515px; overflow-y:auto; padding-right:8px;">', unsafe_allow_html=True)
     st.markdown('<div class="card-title">🔥 TOP 10 EXTENDED MICRO-TRENDS</div>', unsafe_allow_html=True)
     
+    trend_rows = []
     for trend in micro_trends_items:
-        tag_t = f"tag-{trend['source'].lower().replace('.','').replace(' shop','')}"
-        st.markdown(f'''
+        tag_t = get_platform_tag(trend['source'])
+        trend_rows.append(f'''
         <div class="micro-trend-row">
             <span class="micro-trend-rank">#{trend['id']}</span>
             <div class="micro-trend-title">
@@ -284,59 +342,28 @@ with col_right:
                 <span style="color:#4caf50; font-weight:600; font-size:0.7rem; margin-left:4px;">{trend['price']}</span>
             </div>
         </div>
-        ''', unsafe_allow_html=True)
+        ''')
+    st.markdown("".join(trend_rows), unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
 
-# ==================== HIGH DENSITY ANALYTICS EXPANSION LAYER ====================
-with col_center:
-    st.markdown('<div class="premium-card" style="padding: 12px; height: 180px; margin-top:-5px;">', unsafe_allow_html=True)
-    
-    c_day_col, c_tab_col = st.columns([1.1, 2])
-    with c_day_col:
-        choice_day = st.radio("Chrono Vector Target:", ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], index=['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].index(st.session_state.selected_day), horizontal=True)
-        if choice_day != st.session_state.selected_day:
-            st.session_state.selected_day = choice_day
-            st.rerun()
-            
-    with c_tab_col:
-        view_tab1, view_tab2 = st.tabs(["7-Day Cumulative Trends", f"Hourly Velocity ({st.session_state.selected_day})"])
-    
-    with view_tab1:
-        fig_7d = px.bar(prominent_item['sales_days'], x='Day', y='Units Sold', color='Units Sold', color_continuous_scale='Purples')
-        fig_7d.update_layout(
-            plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#94a3b8',
-            margin=dict(l=5, r=5, t=5, b=5), coloraxis_showscale=False, height=100, xaxis_title=None, yaxis_title=None
-        )
-        st.plotly_chart(fig_7d, use_container_width=True, config={'displayModeBar': False})
-        
-    with view_tab2:
-        fig_24h = px.line(prominent_item['sales_hours'][st.session_state.selected_day], x='Hour', y='Units Sold')
-        fig_24h.update_traces(line_color='#00f2fe')
-        fig_24h.update_layout(
-            plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#94a3b8',
-            margin=dict(l=5, r=5, t=5, b=5), height=100, xaxis_title=None, yaxis_title=None
-        )
-        st.plotly_chart(fig_24h, use_container_width=True, config={'displayModeBar': False})
-    st.markdown('</div>', unsafe_allow_html=True)
-
-
-# ==================== LOWER MATRIX GRID SYSTEM (ITEMS 2 - 15) ====================
-# Fills directly beneath the live radar component on the screen real estate
+# ==================== LOWER MATRIX GRID (ITEMS 2 - 15) ====================
 st.markdown('<hr style="margin: 5px 0 15px 0; border: none; border-top: 1px solid rgba(255,255,255,0.06);"/>', unsafe_allow_html=True)
 st.markdown('<h3 style="margin-bottom:12px; font-size:1.0rem; letter-spacing:-0.01em;">📊 RETAIL CORRIDOR EVALUATION MATRIX (POSITIONS 2 - 15)</h3>', unsafe_allow_html=True)
 
 cols_per_row = 5
-for i in range(1, len(retrieved_items), cols_per_row):
-    row_items = retrieved_items[i:i+cols_per_row]
+remaining_items = retrieved_items[1:]
+
+for i in range(0, len(remaining_items), cols_per_row):
+    row_items = remaining_items[i:i + cols_per_row]
     grid_cols = st.columns(cols_per_row)
     
     for idx, item in enumerate(row_items):
         with grid_cols[idx]:
-            tag_class = f"tag-{item['source'].lower().replace('.','').replace(' shop','')}"
+            tag_cls = get_platform_tag(item['source'])
             st.markdown(f'''
             <div class="tile-container">
-                <div class="platform-tag {tag_class}">{item['source']}</div>
+                <div class="platform-tag {tag_cls}">{item['source']}</div>
                 <a href="{item['url']}" target="_blank">
                     <img src="{item['img']}" class="tile-img" />
                 </a>
